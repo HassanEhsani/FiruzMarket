@@ -1,0 +1,96 @@
+{
+  "@@locale": "fa",
+
+  "welcome": "به فیروزمارکت خوش آمدید!",
+  "@welcome": {
+    "description": "پیام خوش‌آمدگویی در صفحه اصلی"
+  },
+
+  "category_clothing": "پوشاک",
+  "@category_clothing": {
+    "description": "برچسب دسته‌بندی پوشاک"
+  },
+
+  "category_digital": "دیجیتال",
+  "@category_digital": {
+    "description": "برچسب دسته‌بندی دیجیتال"
+  },
+
+  "category_food": "خوراکی",
+  "@category_food": {
+    "description": "برچسب دسته‌بندی خوراکی"
+  },
+
+  "category_home": "لوازم خانگی",
+  "@category_home": {
+    "description": "برچسب دسته‌بندی لوازم خانگی"
+  },
+
+  "category_beauty": "زیبایی",
+  "@category_beauty": {
+    "description": "برچسب دسته‌بندی زیبایی"
+  },
+
+  "products_related_to": "محصولات مرتبط با {category}",
+  "@products_related_to": {
+    "description": "عنوان محصولات مرتبط با یک دسته‌بندی",
+    "placeholders": {
+      "category": {}
+    }
+  },
+
+  "admin_title": "پنل مدیریت",
+  "@admin_title": {
+    "description": "عنوان صفحه پنل مدیریت"
+  },
+
+  "add_product": "➕ افزودن محصول",
+  "@add_product": {
+    "description": "دکمه افزودن محصول"
+  },
+
+  "manage_products": "📝 مدیریت محصولات",
+  "@manage_products": {
+    "description": "دکمه مدیریت محصولات"
+  },
+
+  "manage_categories": "📂 مدیریت دسته‌ها",
+  "@manage_categories": {
+    "description": "دکمه مدیریت دسته‌ها"
+  },
+
+  "product_name": "نام محصول",
+  "@product_name": {
+    "description": "برچسب فیلد نام محصول"
+  },
+
+  "price": "قیمت",
+  "@price": {
+    "description": "برچسب فیلد قیمت محصول"
+  },
+
+  "save": "💾 ذخیره",
+  "@save": {
+    "description": "دکمه ذخیره محصول"
+  },
+
+  "product_management": "مدیریت محصولات",
+  "@product_management": {
+    "description": "عنوان صفحه مدیریت محصولات"
+  },
+
+  "product_management_page": "صفحه مدیریت محصولات",
+  "@product_management_page": {
+    "description": "متن بدنه صفحه مدیریت محصولات"
+  },
+
+  "category_management": "مدیریت دسته‌ها",
+  "@category_management": {
+    "description": "عنوان صفحه مدیریت دسته‌ها"
+  },
+
+  "category_management_page": "صفحه مدیریت دسته‌ها",
+  "@category_management_page": {
+    "description": "متن بدنه صفحه مدیریت دسته‌ها"
+  }
+}
