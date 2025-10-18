@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "202974235575",
+    "project_id": "firuzmarket-54136",
+    "storage_bucket": "firuzmarket-54136.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202974235575:android:05313fc41f3b5c57a3f632",
+        "android_client_info": {
+          "package_name": "com.example.firuz_market"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT2XHyhfmnhxP6lfnCvIVYs5T-vudqXMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202974235575:android:104894a04150f58ca3f632",
+        "android_client_info": {
+          "package_name": "com.firuzmarket.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT2XHyhfmnhxP6lfnCvIVYs5T-vudqXMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

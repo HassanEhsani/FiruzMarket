@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:file_picker/file_picker.dart';
 import '../models/product.dart';
+import '../providers/product_controller.dart';
 import '../l10n/app_localizations.dart';
 import '../utils/translation_helper.dart'; // برای متد translate()
 
@@ -11,24 +15,31 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
+  final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final priceController = TextEditingController();
+  String? selectedImagePath;
   String selectedCategory = 'category_digital';
 
   void saveProduct() {
-    final name = nameController.text;
-    final price = int.tryParse(priceController.text) ?? 0;
+  final name = nameController.text;
+  final price = double.tryParse(priceController.text) ?? 0;
 
-    final newProduct = Product(
-      name: name,
-      price: price.toDouble(), // ✅ تبدیل درست
-      imageUrl: 'assets/images/default.png', // بعداً انتخاب تصویر
-    );
+  final newProduct = Product(
+    name: name,
+    price: price,
+    imageUrl: selectedImagePath ?? 'assets/images/default.png',
+    category: selectedCategory, // ✅ اینجا اضافه کن
+  );
 
-    // TODO: ذخیره محصول در لیست یا دیتابیس
+  Provider.of<ProductController>(context, listen: false).addProduct(newProduct);
 
-    Navigator.pop(context);
-  }
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('محصول با موفقیت اضافه شد')),
+  );
+
+  Navigator.pop(context);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -38,39 +49,74 @@ class _AddProductScreenState extends State<AddProductScreen> {
       appBar: AppBar(title: Text(appLoc.translate('add_product'))),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: appLoc.translate('product_name'),
-              ),
-            ),
-            TextField(
-              controller: priceController,
-              decoration: InputDecoration(labelText: appLoc.translate('price')),
-              keyboardType: TextInputType.number,
-            ),
-            DropdownButton<String>(
-              value: selectedCategory,
-              items: [
-                DropdownMenuItem(
-                  value: 'category_digital',
-                  child: Text(appLoc.translate('category_digital')),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: nameController,
+                  decoration: InputDecoration(
+                    labelText: appLoc.translate('product_name'),
+                  ),
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'نام محصول الزامی است' : null,
                 ),
-                DropdownMenuItem(
-                  value: 'category_clothing',
-                  child: Text(appLoc.translate('category_clothing')),
+                TextFormField(
+                  controller: priceController,
+                  decoration: InputDecoration(labelText: appLoc.translate('price')),
+                  keyboardType: TextInputType.number,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'قیمت الزامی است' : null,
+                ),
+                DropdownButton<String>(
+                  value: selectedCategory,
+                  items: [
+                    DropdownMenuItem(
+                      value: 'category_digital',
+                      child: Text(appLoc.translate('category_digital')),
+                    ),
+                    DropdownMenuItem(
+                      value: 'category_clothing',
+                      child: Text(appLoc.translate('category_clothing')),
+                    ),
+                  ],
+                  onChanged: (value) => setState(() => selectedCategory = value!),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    FilePickerResult? result = await FilePicker.platform.pickFiles(
+                      type: FileType.image,
+                    );
+                    if (result != null) {
+                      setState(() {
+                        selectedImagePath = result.files.single.path;
+                      });
+                    }
+                  },
+                  child: Text('انتخاب عکس'),
+                ),
+                if (selectedImagePath != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Image.file(
+                      File(selectedImagePath!),
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      saveProduct();
+                    }
+                  },
+                  child: Text(appLoc.translate('save')),
                 ),
               ],
-              onChanged: (value) => setState(() => selectedCategory = value!),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: saveProduct,
-              child: Text(appLoc.translate('save')),
-            ),
-          ],
+          ),
         ),
       ),
     );

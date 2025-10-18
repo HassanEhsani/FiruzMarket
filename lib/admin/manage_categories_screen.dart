@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
-import '../l10n/app_localizations.dart';
-import '../utils/translation_helper.dart'; // برای متد translate()
+import 'add_category_screen.dart';
 
 class ManageCategoriesScreen extends StatelessWidget {
   const ManageCategoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final appLoc = AppLocalizations.of(context)!;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appLoc.translate('category_management')),
-      ),
+      appBar: AppBar(title: const Text('مدیریت دسته‌بندی‌ها')),
       body: Center(
-        child: Text(appLoc.translate('category_management_page')),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'اینجا لیست دسته‌بندی‌ها و گزینه‌های افزودن/ویرایش نمایش داده می‌شه',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.add),
+              label: const Text('افزودن دسته‌بندی'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddCategoryScreen()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

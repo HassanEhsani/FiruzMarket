@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
 import '../models/product.dart';
-import '../models/cart_item.dart';
-import '../providers/cart_controller.dart';
+import '../providers/product_controller.dart';
+import '../widgets/product_card.dart';
 import '../utils/translation_helper.dart';
-import '../widgets/product_card.dart'; // اصلاح مسیر
 import '../utils/product_extensions.dart';
 
 class CategoryProductsScreen extends StatelessWidget {
@@ -13,27 +12,16 @@ class CategoryProductsScreen extends StatelessWidget {
 
   const CategoryProductsScreen({super.key, required this.categoryKey});
 
-  List<Product> getProductsForCategory(String categoryKey) {
-    if (categoryKey == 'category_digital') {
-      return [
-        Product(name: 'Smartphone X', imageUrl: 'assets/images/phone.png', price: 799),
-        Product(name: 'Laptop Pro', imageUrl: 'assets/images/laptop.png', price: 1299),
-      ];
-    } else if (categoryKey == 'category_clothing') {
-      return [
-        Product(name: 'T-Shirt', imageUrl: 'assets/images/tshirt.png', price: 29),
-        Product(name: 'Jeans', imageUrl: 'assets/images/jeans.png', price: 59),
-      ];
-    } else {
-      return [];
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final appLoc = AppLocalizations.of(context);
-    final String categoryTitle = appLoc!.translate(categoryKey);
-    final List<Product> products = getProductsForCategory(categoryKey);
+    final appLoc = AppLocalizations.of(context)!;
+    final String categoryTitle = appLoc.translate(categoryKey);
+
+    // ✅ گرفتن محصولات واقعی از کنترلر و فیلتر بر اساس دسته‌بندی
+    final products = Provider.of<ProductController>(context)
+        .products
+        .where((p) => p.category == categoryKey)
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -55,13 +43,15 @@ class CategoryProductsScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return ProductCard(product: product); // استفاده از ویجت آماده
-              },
-            ),
+            child: products.isEmpty
+                ? Center(child: Text('هیچ محصولی در این دسته وجود ندارد'))
+                : ListView.builder(
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return ProductCard(product: product);
+                    },
+                  ),
           ),
         ],
       ),

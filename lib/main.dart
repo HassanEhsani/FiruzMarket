@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart'; // اضافه برای Provider
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
+import 'package:provider/provider.dart';
+
 import 'screens/home_screen.dart';
 import 'l10n/app_localizations.dart';
-import 'providers/cart_controller.dart'; // مسیر جدید
+import 'providers/cart_controller.dart';
+import 'providers/product_controller.dart';
+import 'providers/category_controller.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // اتصال به Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  // ✅ تست اتصال Firestore — می‌تونی بعداً پاکش کنی
+  await FirebaseFirestore.instance
+      .collection('connection_test')
+      .add({'ping': 'ok', 'time': Timestamp.now()});
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CartController()),
+        ChangeNotifierProvider(create: (_) => ProductController()),
+        ChangeNotifierProvider(create: (_) => CategoryController()),
       ],
       child: const FiruzMarketApp(),
     ),
@@ -58,7 +78,7 @@ class _FiruzMarketAppState extends State<FiruzMarketApp> {
         return supportedLocales.first;
       },
       home: HomeScreen(
-        key: ValueKey(_locale.languageCode), // ری‌بیلد شدن صفحه با تغییر زبان
+        key: ValueKey(_locale.languageCode),
         onLocaleChange: setLocale,
       ),
     );
