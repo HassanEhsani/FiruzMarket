@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
 
 class ProductController with ChangeNotifier {
@@ -6,6 +7,17 @@ class ProductController with ChangeNotifier {
 
   List<Product> get products => _products;
 
+  /// 🔹 Real-time stream from Firestore
+  Stream<List<Product>> get productStream {
+    return FirebaseFirestore.instance
+        .collection('products')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Product.fromMap(doc.data()))
+            .toList());
+  }
+
+  /// 🔹 Local product management (optional)
   void addProduct(Product product) {
     _products.add(product);
     notifyListeners();

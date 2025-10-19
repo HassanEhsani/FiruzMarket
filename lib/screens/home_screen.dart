@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/category_controller.dart';
+import '../admin/admin_dashboard.dart';
 
 class HomeScreen extends StatelessWidget {
   final void Function(Locale) onLocaleChange;
@@ -12,11 +13,18 @@ class HomeScreen extends StatelessWidget {
     final categoryController = Provider.of<CategoryController>(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('به فروشگاه خوش آمدید'),
+        backgroundColor: const Color(0xFF4CAF50),
+        title: const Text(
+          'به فروشگاه خوش آمدید',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 2,
         actions: [
           PopupMenuButton<Locale>(
-            icon: const Icon(Icons.language),
+            icon: const Icon(Icons.language, color: Colors.white),
             onSelected: onLocaleChange,
             itemBuilder: (context) => const [
               PopupMenuItem(value: Locale('fa'), child: Text('فارسی')),
@@ -26,32 +34,93 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<List<String>>(
-        stream: categoryController.categoryStream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            ElevatedButton.icon(
+              icon: const Icon(Icons.admin_panel_settings),
+              label: const Text('ورود به پنل مدیریت'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4CAF50),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AdminDashboard()),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: StreamBuilder<List<String>>(
+                stream: categoryController.categoryStream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
+                    );
+                  }
 
-          final categories = snapshot.data!;
-          if (categories.isEmpty) {
-            return const Center(child: Text('هیچ دسته‌ای یافت نشد'));
-          }
+                  final categories = snapshot.data!;
+                  if (categories.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'هیچ دسته‌ای یافت نشد',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    );
+                  }
 
-          return ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              final name = categories[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ListTile(
-                  leading: const Icon(Icons.category),
-                  title: Text(name),
-                ),
-              );
-            },
-          );
-        },
+                  return GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1,
+                    ),
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      final name = categories[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.green.shade100,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                          border: Border.all(color: Color(0xFF4CAF50), width: 1),
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.category, size: 32, color: Color(0xFF4CAF50)),
+                              const SizedBox(height: 8),
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xFF2E7D32),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

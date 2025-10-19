@@ -5,6 +5,7 @@ import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/home_screen.dart';
+import 'screens/entry_screen.dart';
 import 'l10n/app_localizations.dart';
 import 'providers/cart_controller.dart';
 import 'providers/product_controller.dart';
@@ -31,7 +32,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ProductController()),
         ChangeNotifierProvider(create: (_) => CategoryController()),
       ],
-      child: const FiruzMarketApp(),
+      child: FiruzMarketApp(), // ❌ بدون const چون تابع داریم
     ),
   );
 }
@@ -77,10 +78,7 @@ class _FiruzMarketAppState extends State<FiruzMarketApp> {
         }
         return supportedLocales.first;
       },
-      home: HomeScreen(
-        key: ValueKey(_locale.languageCode),
-        onLocaleChange: setLocale,
-      ),
+      home: EntryScreen(onLocaleChange: setLocale), // ✅ تابع به‌درستی ارسال شد
     );
   }
 }

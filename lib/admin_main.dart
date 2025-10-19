@@ -3,15 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'admin/add_category_screen.dart';
-import '../providers/category_controller.dart';
+import 'admin/admin_login_screen.dart'; // ✅ مسیر درست برای صفحه‌ی لاگین
+import 'providers/category_controller.dart'; // ✅ مسیر بدون ../ چون در lib هست
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
     ChangeNotifierProvider(
@@ -29,7 +27,8 @@ class AdminApp extends StatelessWidget {
     return MaterialApp(
       title: 'پنل مدیریت فیروزمارکت',
       theme: ThemeData(primarySwatch: Colors.deepOrange),
-      home: const AddCategoryScreen(),
+      debugShowCheckedModeBanner: false, // ✅ این خط بنر DEBUG رو حذف می‌کنه
+      home: const AdminLoginScreen(), // ✅ مسیر درست و بدون ارور
     );
   }
 }
