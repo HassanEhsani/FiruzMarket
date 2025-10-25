@@ -7,7 +7,7 @@ class ProductController with ChangeNotifier {
 
   List<Product> get products => _products;
 
-  /// 🔹 Real-time stream from Firestore
+  /// 🔹 Real-time stream from Firestore (در صورت اتصال)
   Stream<List<Product>> get productStream {
     return FirebaseFirestore.instance
         .collection('products')
@@ -17,7 +17,37 @@ class ProductController with ChangeNotifier {
             .toList());
   }
 
-  /// 🔹 Local product management (optional)
+  /// 🔹 افزودن محصولات تستی به‌صورت محلی
+  void initSampleProducts() {
+    _products.addAll([
+      Product(
+        name: 'تی‌شرت سفید',
+        price: 320,
+        imageUrl: 'assets/images/tshirt.png',
+        category: 'پوشاک',
+      ),
+      Product(
+        name: 'شلوار جین',
+        price: 580,
+        imageUrl: 'assets/images/jeans.png',
+        category: 'پوشاک',
+      ),
+      Product(
+        name: 'گوشی هوشمند',
+        price: 8900,
+        imageUrl: 'assets/images/phone.png',
+        category: 'دیجیتال',
+      ),
+      Product(
+        name: 'لپ‌تاپ Core i5',
+        price: 19800,
+        imageUrl: 'assets/images/laptop.png',
+        category: 'دیجیتال',
+      ),
+    ]);
+    notifyListeners();
+  }
+
   void addProduct(Product product) {
     _products.add(product);
     notifyListeners();

@@ -1,6 +1,6 @@
 class Product {
   final String name;
-  final int price;
+  final int price; // قیمت به روبل روسیه
   final String imageUrl;
   final String category;
 
@@ -19,4 +19,15 @@ class Product {
       category: map['category'] ?? '',
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'price': price,
+      'imageUrl': imageUrl,
+      'category': category,
+    };
+  }
+
+  String get formattedPrice => '$price ₽'; // نمایش قیمت با واحد روبل
 }

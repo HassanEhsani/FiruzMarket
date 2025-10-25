@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // برای مدیریت وضعیت
+import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart_item.dart';
-import '../providers/cart_controller.dart'; // مسیر رو با ساختار پروژه‌ات هماهنگ کن
-import '../utils/product_extensions.dart'; // اگر اکستنشن رو جدا کردی
+import '../providers/cart_controller.dart';
+
+/// ✅ اکستنشن تبدیل Product به CartItem
+extension ProductCartExtension on Product {
+  CartItem toCartItem() {
+    return CartItem(
+      id: name,
+      name: name,
+      price: price.toDouble(),
+      quantity: 1,
+      imageUrl: imageUrl,
+    );
+  }
+}
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -14,6 +26,8 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
@@ -21,11 +35,12 @@ class ProductCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
+              child: Image.network(
                 product.imageUrl,
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, size: 60),
               ),
             ),
             const SizedBox(width: 12),
@@ -33,12 +48,23 @@ class ProductCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.name,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text('${product.price} تومان',
-                      style: const TextStyle(color: Colors.grey)),
+                  Text(
+                    product.formattedPrice,
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    product.category,
+                    style: const TextStyle(fontSize: 12, color: Colors.teal),
+                  ),
                 ],
               ),
             ),
@@ -49,7 +75,10 @@ class ProductCard extends StatelessWidget {
                 cart.addItem(product.toCartItem());
 
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${product.name} به سبد خرید اضافه شد')),
+                  SnackBar(
+                    content: Text('${product.name} به سبد خرید اضافه شد'),
+                    duration: const Duration(seconds: 2),
+                  ),
                 );
               },
             ),

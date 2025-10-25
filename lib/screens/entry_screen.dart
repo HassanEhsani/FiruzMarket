@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-import '../admin/admin_dashboard.dart';
+import 'products_screen.dart';
 
 class EntryScreen extends StatelessWidget {
-  final void Function(Locale) onLocaleChange;
-
-  const EntryScreen({super.key, required this.onLocaleChange});
+  const EntryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,25 +26,16 @@ class EntryScreen extends StatelessWidget {
             ElevatedButton.icon(
               icon: const Icon(Icons.store),
               label: const Text('ورود به فروشگاه'),
-              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF4CAF50)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4CAF50),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomeScreen(onLocaleChange: onLocaleChange),
+                    builder: (context) => const ProductsScreen(), // ✅ اتصال به لیست محصولات
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.admin_panel_settings),
-              label: const Text('ورود به پنل مدیریت'),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey.shade700),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AdminDashboard()),
                 );
               },
             ),

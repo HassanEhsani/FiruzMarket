@@ -4,16 +4,6 @@ import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
-/// Default [FirebaseOptions] for use with your Firebase apps.
-///
-/// Example:
-/// ```dart
-/// import 'firebase_options.dart';
-/// // ...
-/// await Firebase.initializeApp(
-///   options: DefaultFirebaseOptions.currentPlatform,
-/// );
-/// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
@@ -46,7 +36,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '202974235575',
     projectId: 'firuzmarket-54136',
     authDomain: 'firuzmarket-54136.firebaseapp.com',
-    storageBucket: 'firuzmarket-54136.firebasestorage.app',
+    storageBucket: 'firuzmarket-54136.appspot.com',
     measurementId: 'G-GE6TJ0Z104',
   );
 
@@ -55,7 +45,7 @@ class DefaultFirebaseOptions {
     appId: '1:202974235575:android:05313fc41f3b5c57a3f632',
     messagingSenderId: '202974235575',
     projectId: 'firuzmarket-54136',
-    storageBucket: 'firuzmarket-54136.firebasestorage.app',
+    storageBucket: 'firuzmarket-54136.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,7 +53,7 @@ class DefaultFirebaseOptions {
     appId: '1:202974235575:ios:276ebe626f2e22fba3f632',
     messagingSenderId: '202974235575',
     projectId: 'firuzmarket-54136',
-    storageBucket: 'firuzmarket-54136.firebasestorage.app',
+    storageBucket: 'firuzmarket-54136.appspot.com',
     iosBundleId: 'com.example.firuzMarket',
   );
 
@@ -72,8 +62,8 @@ class DefaultFirebaseOptions {
     appId: '1:202974235575:ios:276ebe626f2e22fba3f632',
     messagingSenderId: '202974235575',
     projectId: 'firuzmarket-54136',
-    storageBucket: 'firuzmarket-54136.firebasestorage.app',
-    iosBundleId: 'com.example.firuzMarket',
+    storageBucket: 'firuzmarket-54136.appspot.com',
+    // ❌ iosBundleId حذف شد
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -82,8 +72,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '202974235575',
     projectId: 'firuzmarket-54136',
     authDomain: 'firuzmarket-54136.firebaseapp.com',
-    storageBucket: 'firuzmarket-54136.firebasestorage.app',
+    storageBucket: 'firuzmarket-54136.appspot.com',
     measurementId: 'G-DGBXBXRSDM',
   );
-
 }

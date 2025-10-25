@@ -1,1 +1,27 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"firuzmarket-54136","appId":"1:202974235575:android:05313fc41f3b5c57a3f632","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"firuzmarket-54136","appId":"1:202974235575:ios:276ebe626f2e22fba3f632","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"firuzmarket-54136","appId":"1:202974235575:ios:276ebe626f2e22fba3f632","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"firuzmarket-54136","configurations":{"android":"1:202974235575:android:05313fc41f3b5c57a3f632","ios":"1:202974235575:ios:276ebe626f2e22fba3f632","macos":"1:202974235575:ios:276ebe626f2e22fba3f632","web":"1:202974235575:web:254e4e59ead0d21ea3f632","windows":"1:202974235575:web:24100fed972f60a8a3f632"}}}}}}
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "emulators": {
+    "auth": {
+      "host": "127.0.0.1",
+      "port": 9098
+    },
+    "firestore": {
+      "host": "127.0.0.1",
+      "port": 8084
+    },
+    "storage": {
+      "host": "127.0.0.1",
+      "port": 9198
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}
+

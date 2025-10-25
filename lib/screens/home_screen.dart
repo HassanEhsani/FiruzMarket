@@ -1,126 +1,168 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/category_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../admin/admin_dashboard.dart';
 
-class HomeScreen extends StatelessWidget {
-  final void Function(Locale) onLocaleChange;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
-  const HomeScreen({super.key, required this.onLocaleChange});
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _showWelcomeBanner = true;
 
   @override
   Widget build(BuildContext context) {
-    final categoryController = Provider.of<CategoryController>(context);
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: const Color(0xFF4CAF50),
-        title: const Text(
-          'به فروشگاه خوش آمدید',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 2,
-        actions: [
-          PopupMenuButton<Locale>(
-            icon: const Icon(Icons.language, color: Colors.white),
-            onSelected: onLocaleChange,
-            itemBuilder: (context) => const [
-              PopupMenuItem(value: Locale('fa'), child: Text('فارسی')),
-              PopupMenuItem(value: Locale('ru'), child: Text('Русский')),
-              PopupMenuItem(value: Locale('en'), child: Text('English')),
-            ],
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+        title: Row(
           children: [
-            ElevatedButton.icon(
-              icon: const Icon(Icons.admin_panel_settings),
-              label: const Text('ورود به پنل مدیریت'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4CAF50),
+            const Icon(Icons.storefront, size: 28),
+            const SizedBox(width: 8),
+            const Text('FiruzMarket'),
+            const Spacer(),
+            IconButton(icon: const Icon(Icons.favorite_border), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.shopping_cart_outlined), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.login), onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('ورود / عضویت هنوز فعال نشده')),
+              );
+            }),
+          ],
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(56),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'جستجو در محصولات...',
+                      filled: true,
+                      fillColor: Colors.white,
+                      prefixIcon: const Icon(Icons.search),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.dashboard),
+                  label: const Text('ورود به داشبورد'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const AdminDashboard()),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          if (_showWelcomeBanner)
+            Container(
+              color: Colors.yellow.shade100,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline),
+                  const SizedBox(width: 8),
+                  const Expanded(
+                    child: Text(
+                      'مشتری عزیز، برای ورود و عضویت لطفاً دکمه زیر را فشار دهید.',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      setState(() => _showWelcomeBanner = false);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('ورود / عضویت هنوز فعال نشده')),
+                      );
+                    },
+                    child: const Text('ورود / عضویت'),
+                  ),
+                ],
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const AdminDashboard()),
+            ),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('products').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('خطا در دریافت محصولات'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                final products = snapshot.data!.docs;
+
+                if (products.isEmpty) {
+                  return const Center(child: Text('هیچ محصولی ثبت نشده است'));
+                }
+
+                return GridView.builder(
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.75,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    final doc = products[index];
+                    final data = doc.data() as Map<String, dynamic>;
+
+                    return Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                              child: Image.network(
+                                data['imageUrl'] ?? 'https://via.placeholder.com/150',
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Center(child: Icon(Icons.broken_image));
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(data['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                const SizedBox(height: 4),
+                                Text('قیمت: ${data['price']} تومان'),
+                                Text('دسته: ${data['category']}'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 );
               },
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: StreamBuilder<List<String>>(
-                stream: categoryController.categoryStream,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(color: Color(0xFF4CAF50)),
-                    );
-                  }
-
-                  final categories = snapshot.data!;
-                  if (categories.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'هیچ دسته‌ای یافت نشد',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
-                      ),
-                    );
-                  }
-
-                  return GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1,
-                    ),
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      final name = categories[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.green.shade100,
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                          border: Border.all(color: Color(0xFF4CAF50), width: 1),
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.category, size: 32, color: Color(0xFF4CAF50)),
-                              const SizedBox(height: 8),
-                              Text(
-                                name,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF2E7D32),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
