@@ -63,4 +63,52 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get category_management_page => 'صفحه مدیریت دسته‌ها';
+
+  @override
+  String get searchHint => 'جستجوی محصول...';
+
+  @override
+  String get categoryClothing => 'پوشاک';
+
+  @override
+  String get categoryDigital => 'دیجیتال';
+
+  @override
+  String get categoryHome => 'خانه';
+
+  @override
+  String get categorySports => 'ورزشی';
+
+  @override
+  String get categoryAll => 'همه';
+
+  @override
+  String get errorLoadingProducts => 'خطا در دریافت محصولات';
+
+  @override
+  String get noProductsFound => 'هیچ محصولی یافت نشد';
+
+  @override
+  String get navHome => 'خانه';
+
+  @override
+  String get navSpecial => 'ویژه';
+
+  @override
+  String get navFood => 'خوراکی';
+
+  @override
+  String get navFavorites => 'علاقه‌مندی';
+
+  @override
+  String get navCart => 'سبد خرید';
+
+  @override
+  String get navProfile => 'پروفایل';
+
+  @override
+  String get productTshirt => 'تی‌شرت';
+
+  @override
+  String get productShoes => 'کفش';
 }

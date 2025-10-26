@@ -63,4 +63,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get category_management_page => 'Category Management Page';
+
+  @override
+  String get searchHint => 'Search for product...';
+
+  @override
+  String get categoryClothing => 'Clothing';
+
+  @override
+  String get categoryDigital => 'Digital';
+
+  @override
+  String get categoryHome => 'Home';
+
+  @override
+  String get categorySports => 'Sports';
+
+  @override
+  String get categoryAll => 'All';
+
+  @override
+  String get errorLoadingProducts => 'Error loading products';
+
+  @override
+  String get noProductsFound => 'No products found';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navSpecial => 'Special';
+
+  @override
+  String get navFood => 'Food';
+
+  @override
+  String get navFavorites => 'Favorites';
+
+  @override
+  String get navCart => 'Cart';
+
+  @override
+  String get navProfile => 'Profile';
+
+  @override
+  String get productTshirt => 'T-shirt';
+
+  @override
+  String get productShoes => 'Shoes';
 }

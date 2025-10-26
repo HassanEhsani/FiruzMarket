@@ -3,9 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_controller.dart';
-import '../l10n/app_localizations.dart';
 
-/// ✅ اکستنشن تبدیل Product به CartItem
 extension ProductCartExtension on Product {
   CartItem toCartItem() {
     return CartItem(
@@ -25,70 +23,157 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                product.imageUrl,
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.broken_image, size: 60),
-              ),
+    final discount = product.discountPercent;
+    final hasOldPrice = product.oldPrice != null;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x11000000),
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          final cart = Provider.of<CartController>(context, listen: false);
+          cart.addItem(product.toCartItem());
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('${product.name} به سبد خرید اضافه شد'),
+              duration: const Duration(seconds: 2),
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            children: [
+              Stack(
                 children: [
-                  Text(
-                    product.name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.asset(
+                      product.imageUrl,
+                      width: 72,
+                      height: 72,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, size: 72),
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    product.formattedPrice,
-                    style: const TextStyle(color: Colors.grey),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    product.category,
-                    style: const TextStyle(fontSize: 12, color: Colors.teal),
-                  ),
+                  if (product.isFeatured)
+                    Positioned(
+                      top: 4,
+                      left: 4,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.deepOrange,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'پیشنهاد ویژه',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.add_shopping_cart),
-              tooltip: 'افزودن به سبد خرید',
-              onPressed: () {
-                final cart = Provider.of<CartController>(
-                  context,
-                  listen: false,
-                );
-                cart.addItem(product.toCartItem());
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Text(
+                          product.formattedPrice,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        if (hasOldPrice)
+                          Text(
+                            product.formattedOldPrice!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        if (discount != null)
+                          Container(
+                            margin: const EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.green[100],
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              '-$discount%',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      product.category,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                icon: const Icon(Icons.add_shopping_cart),
+                tooltip: 'افزودن به سبد خرید',
+                onPressed: () {
+                  final cart = Provider.of<CartController>(context, listen: false);
+                  cart.addItem(product.toCartItem());
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${product.name} به سبد خرید اضافه شد'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-            ),
-          ],
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${product.name} به سبد خرید اضافه شد'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

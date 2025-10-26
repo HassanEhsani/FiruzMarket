@@ -92,5 +92,28 @@
   "category_management_page": "صفحه مدیریت دسته‌ها",
   "@category_management_page": {
     "description": "متن بدنه صفحه مدیریت دسته‌ها"
-  }
+  },
+
+  "searchHint": "جستجوی محصول...",
+  "categoryClothing": "پوشاک",
+  "categoryDigital": "دیجیتال",
+  "categoryHome": "خانه",
+  "categorySports": "ورزشی",
+  "categoryAll": "همه",
+  "errorLoadingProducts": "خطا در دریافت محصولات",
+  "noProductsFound": "هیچ محصولی یافت نشد",
+  "navHome": "خانه",
+  "navSpecial": "ویژه",
+  "navFood": "خوراکی",
+  "navFavorites": "علاقه‌مندی",
+  "navCart": "سبد خرید",
+  "navProfile": "پروفایل",
+  "navHome": "خانه",
+  "navSpecial": "ویژه",
+  "navFood": "خوراکی",
+  "navFavorites": "علاقه‌مندی",
+  "navCart": "سبد خرید",
+  "navProfile": "پروفایل",
+  "productTshirt": "تی‌شرت",
+  "productShoes": "کفش"
 }

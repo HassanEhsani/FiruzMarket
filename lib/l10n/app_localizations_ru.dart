@@ -63,4 +63,52 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get category_management_page => 'Страница управления категориями';
+
+  @override
+  String get searchHint => 'Поиск товара...';
+
+  @override
+  String get categoryClothing => 'Одежда';
+
+  @override
+  String get categoryDigital => 'Цифровое';
+
+  @override
+  String get categoryHome => 'Дом';
+
+  @override
+  String get categorySports => 'Спорт';
+
+  @override
+  String get categoryAll => 'Все';
+
+  @override
+  String get errorLoadingProducts => 'Ошибка при загрузке товаров';
+
+  @override
+  String get noProductsFound => 'Товары не найдены';
+
+  @override
+  String get navHome => 'Главная';
+
+  @override
+  String get navSpecial => 'Специальное';
+
+  @override
+  String get navFood => 'Еда';
+
+  @override
+  String get navFavorites => 'Избранное';
+
+  @override
+  String get navCart => 'Корзина';
+
+  @override
+  String get navProfile => 'Профиль';
+
+  @override
+  String get productTshirt => 'Футболка';
+
+  @override
+  String get productShoes => 'Обувь';
 }

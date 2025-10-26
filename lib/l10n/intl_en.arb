@@ -92,5 +92,29 @@
   "category_management_page": "Category Management Page",
   "@category_management_page": {
     "description": "Body text for the category management screen"
-  }
+  },
+  
+  "searchHint": "Search for product...",
+  "categoryClothing": "Clothing",
+  "categoryDigital": "Digital",
+  "categoryHome": "Home",
+  "categorySports": "Sports",
+  "categoryAll": "All",
+  "errorLoadingProducts": "Error loading products",
+  "noProductsFound": "No products found",
+  "navHome": "Home",
+  "navSpecial": "Specials",
+  "navFood": "Food",
+  "navFavorites": "Favorites",
+  "navCart": "Cart",
+  "navProfile": "Profile",
+  "navHome": "Home",
+  "navSpecial": "Special",
+  "navFood": "Food",
+  "navFavorites": "Favorites",
+  "navCart": "Cart",
+  "navProfile": "Profile",
+  "productTshirt": "T-shirt",
+  "productShoes": "Shoes"
+
 }

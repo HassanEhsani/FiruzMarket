@@ -3,65 +3,277 @@ import 'package:provider/provider.dart';
 import '../providers/product_controller.dart';
 import '../models/product.dart';
 import '../widgets/product_card.dart';
+import '../widgets/language_switcher.dart';
+import '../l10n/app_localizations.dart';
 
-class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({super.key});
+class ProductsScreen extends StatefulWidget {
+  final void Function(Locale)? onLocaleChanged;
+
+  const ProductsScreen({super.key, this.onLocaleChanged});
+
+  @override
+  State<ProductsScreen> createState() => _ProductsScreenState();
+}
+
+class _ProductsScreenState extends State<ProductsScreen> {
+  int selectedIndex = 0;
+
+  Widget buildTopNavigationBar(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+    final currentLocale = Localizations.localeOf(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              const Icon(Icons.location_on, color: Colors.grey),
+              const SizedBox(width: 4),
+              const Text(
+                'کازانسکایا، ۴',
+                style: TextStyle(fontSize: 14, color: Colors.black87),
+              ),
+              const Spacer(),
+              LanguageSwitcher(
+                currentLocale: currentLocale,
+                onLocaleChanged: widget.onLocaleChanged!,
+              ),
+              const SizedBox(width: 8),
+              const Icon(Icons.monetization_on, color: Colors.amber),
+              const SizedBox(width: 4),
+              const Text(
+                '۲۰',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: loc.searchHint,
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: const Icon(Icons.mic),
+              filled: true,
+              fillColor: Colors.grey[100],
+              contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 72,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: [
+              _buildCategoryIcon(
+                'assets/images/clothing.png',
+                loc.categoryClothing,
+              ),
+              _buildCategoryIcon(
+                'assets/images/digital.png',
+                loc.categoryDigital,
+              ),
+              _buildCategoryIcon('assets/images/home.png', loc.categoryHome),
+              _buildCategoryIcon(
+                'assets/images/sports.png',
+                loc.categorySports,
+              ),
+              _buildCategoryIcon('assets/images/all.png', loc.categoryAll),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryIcon(String iconPath, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x11000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: Image.asset(iconPath, fit: BoxFit.contain),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(label, style: const TextStyle(fontSize: 12)),
+        ],
+      ),
+    );
+  }
+
+  Widget buildHeaderSection(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: loc.searchHint,
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: const Icon(Icons.mic),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 48,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            children: [
+              _buildCategoryChip(loc.categoryClothing),
+              _buildCategoryChip(loc.categoryDigital),
+              _buildCategoryChip(loc.categoryHome),
+              _buildCategoryChip('زیبایی'),
+              _buildCategoryChip(loc.categorySports),
+              _buildCategoryChip('کتاب'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCategoryChip(String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Chip(
+        label: Text(label),
+        backgroundColor: Colors.grey[200],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+    );
+  }
+
+  Widget buildBottomNavBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.white,
+      selectedItemColor: Colors.deepOrange,
+      unselectedItemColor: Colors.grey,
+      currentIndex: selectedIndex,
+      onTap: (index) {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.home),
+          label: AppLocalizations.of(context).navHome,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.egg),
+          label: AppLocalizations.of(context).navSpecial,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.local_grocery_store),
+          label: AppLocalizations.of(context).navFood,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.favorite_border),
+          label: AppLocalizations.of(context).navFavorites,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.shopping_cart),
+          label: AppLocalizations.of(context).navCart,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.person),
+          label: AppLocalizations.of(context).navProfile,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('محصولات'),
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: Consumer<ProductController>(
+          builder: (context, controller, _) {
+            final products = controller.products;
+
+            if (products.isEmpty) {
+              return StreamBuilder<List<Product>>(
+                stream: controller.productStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('خطا در دریافت محصولات'));
+                  }
+
+                  final streamProducts = snapshot.data ?? [];
+
+                  return buildFullPage(context, streamProducts);
+                },
+              );
+            }
+
+            return buildFullPage(context, products);
+          },
+        ),
       ),
-      body: Consumer<ProductController>(
-        builder: (context, controller, _) {
-          // اگر محصولات تستی مقداردهی شده‌اند، همان‌ها نمایش داده شوند
-          if (controller.products.isNotEmpty) {
-            return _ProductsList(products: controller.products);
-          }
-
-          // در غیر این صورت به استریم Firestore سوییچ کن
-          return StreamBuilder<List<Product>>(
-            stream: controller.productStream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (snapshot.hasError) {
-                return const Center(child: Text('خطا در دریافت محصولات'));
-              }
-
-              final products = snapshot.data ?? const <Product>[];
-
-              if (products.isEmpty) {
-                return const Center(child: Text('هیچ محصولی یافت نشد'));
-              }
-
-              return _ProductsList(products: products);
-            },
-          );
-        },
-      ),
+      bottomNavigationBar: buildBottomNavBar(),
     );
   }
-}
 
-class _ProductsList extends StatelessWidget {
-  final List<Product> products;
-
-  const _ProductsList({super.key, required this.products});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: products.length,
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      separatorBuilder: (_, __) => const SizedBox(height: 4),
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ProductCard(product: product);
-      },
+  Widget buildFullPage(BuildContext context, List<Product> products) {
+    return Column(
+      children: [
+        buildTopNavigationBar(context),
+        const SizedBox(height: 8),
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.only(bottom: 12),
+            itemCount: products.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 4),
+            itemBuilder: (context, index) {
+              return ProductCard(product: products[index]);
+            },
+          ),
+        ),
+      ],
     );
   }
 }

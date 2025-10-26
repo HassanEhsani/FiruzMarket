@@ -207,6 +207,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Category Management Page'**
   String get category_management_page;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for product...'**
+  String get searchHint;
+
+  /// No description provided for @categoryClothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Clothing'**
+  String get categoryClothing;
+
+  /// No description provided for @categoryDigital.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital'**
+  String get categoryDigital;
+
+  /// No description provided for @categoryHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get categoryHome;
+
+  /// No description provided for @categorySports.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports'**
+  String get categorySports;
+
+  /// No description provided for @categoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get categoryAll;
+
+  /// No description provided for @errorLoadingProducts.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading products'**
+  String get errorLoadingProducts;
+
+  /// No description provided for @noProductsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No products found'**
+  String get noProductsFound;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navSpecial.
+  ///
+  /// In en, this message translates to:
+  /// **'Special'**
+  String get navSpecial;
+
+  /// No description provided for @navFood.
+  ///
+  /// In en, this message translates to:
+  /// **'Food'**
+  String get navFood;
+
+  /// No description provided for @navFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get navFavorites;
+
+  /// No description provided for @navCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart'**
+  String get navCart;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @productTshirt.
+  ///
+  /// In en, this message translates to:
+  /// **'T-shirt'**
+  String get productTshirt;
+
+  /// No description provided for @productShoes.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoes'**
+  String get productShoes;
 }
 
 class _AppLocalizationsDelegate

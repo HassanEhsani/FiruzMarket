@@ -18,31 +18,35 @@ class ProductController with ChangeNotifier {
               .map((doc) => Product.fromMap(doc.data()))
               .toList());
     } catch (e) {
-      // اگر Firestore مقداردهی نشده یا خطا داشت، استریم خالی برگردون
       return const Stream.empty();
     }
   }
 
-  /// 🔹 افزودن محصولات تستی به‌صورت محلی
+  /// 🔹 افزودن محصولات تستی با تخفیف و برچسب ویژه
   void initSampleProducts() {
     _products.addAll([
       Product(
         name: 'تی‌شرت سفید',
         price: 320,
+        oldPrice: 450,
         imageUrl: 'assets/images/tshirt.png',
         category: 'پوشاک',
+        isFeatured: true,
       ),
       Product(
         name: 'شلوار جین',
         price: 580,
+        oldPrice: 720,
         imageUrl: 'assets/images/jeans.png',
         category: 'پوشاک',
       ),
       Product(
         name: 'گوشی هوشمند',
         price: 8900,
+        oldPrice: 10500,
         imageUrl: 'assets/images/phone.png',
         category: 'دیجیتال',
+        isFeatured: true,
       ),
       Product(
         name: 'لپ‌تاپ Core i5',
