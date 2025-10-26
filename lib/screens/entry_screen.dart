@@ -9,37 +9,39 @@ class EntryScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('FiruzMarket'),
-        backgroundColor: const Color(0xFF4CAF50),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'به FiruzMarket خوش آمدید',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.store),
-              label: const Text('ورود به فروشگاه'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4CAF50),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'به FiruzMarket خوش آمدید',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProductsScreen(), // ✅ اتصال به لیست محصولات
-                  ),
-                );
-              },
-            ),
-          ],
+              const SizedBox(height: 32),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.store),
+                label: const Text('ورود به فروشگاه'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProductsScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

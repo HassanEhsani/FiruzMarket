@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/cart_controller.dart'; // یا controller بسته به مسیر واقعی
+import '../providers/cart_controller.dart';
 import '../models/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
@@ -29,8 +29,9 @@ class CartScreen extends StatelessWidget {
                         ),
                         child: ListTile(
                           leading: Image.asset(
-                            item.imageUrl, // باید در مدل CartItem باشه
+                            item.imageUrl, // مسیر asset مثل: assets/images/apple.png
                             width: 50,
+                            height: 50,
                             fit: BoxFit.cover,
                           ),
                           title: Text(item.name),
@@ -39,6 +40,12 @@ class CartScreen extends StatelessWidget {
                             icon: const Icon(Icons.delete),
                             onPressed: () {
                               cart.removeItem(item.id);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('${item.name} حذف شد'),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -53,6 +60,10 @@ class CartScreen extends StatelessWidget {
                     children: [
                       Text(
                         'مجموع: ${cart.totalPrice.toStringAsFixed(2)} تومان',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: () {

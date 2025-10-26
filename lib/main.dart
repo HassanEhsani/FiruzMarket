@@ -1,29 +1,33 @@
 import 'package:flutter/material.dart';
-import 'user/profile_page.dart'; // مطمئن شو این فایل وجود داره
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
+import 'providers/product_controller.dart';
+import 'providers/cart_controller.dart';
+import 'screens/products_screen.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ هندل کردن خطاها برای جلوگیری از صفحه سفید
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.dumpErrorToConsole(details);
-  };
+  // 🔹 مقداردهی اولیه Firebase
+  await Firebase.initializeApp();
 
-  ErrorWidget.builder = (FlutterErrorDetails details) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text(
-            'Runtime error: ${details.exception}',
-            style: const TextStyle(color: Colors.red, fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
-  };
+  // 🔹 اتصال به شبیه‌ساز Firestore (پورت پیش‌فرض: 8080)
+  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8084);
+  // 🔹 مقداردهی اولیه کنترلر محصول با داده‌های تستی
+  final productController = ProductController();
+  productController.initSampleProducts();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => productController),
+        ChangeNotifierProvider(create: (_) => CartController()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -31,9 +35,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ProfilePage(), // صفحه پروفایل برای تست
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xFF4CAF50),
+        useMaterial3: true,
+      ),
+      home: const ProductsScreen(),
     );
   }
 }

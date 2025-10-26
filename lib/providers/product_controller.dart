@@ -7,14 +7,20 @@ class ProductController with ChangeNotifier {
 
   List<Product> get products => _products;
 
-  /// 🔹 Real-time stream from Firestore (در صورت اتصال)
+  /// 🔹 استریم Firestore (در صورت فعال بودن Firebase)
   Stream<List<Product>> get productStream {
-    return FirebaseFirestore.instance
-        .collection('products')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => Product.fromMap(doc.data()))
-            .toList());
+    try {
+      final firestore = FirebaseFirestore.instance;
+      return firestore
+          .collection('products')
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => Product.fromMap(doc.data()))
+              .toList());
+    } catch (e) {
+      // اگر Firestore مقداردهی نشده یا خطا داشت، استریم خالی برگردون
+      return const Stream.empty();
+    }
   }
 
   /// 🔹 افزودن محصولات تستی به‌صورت محلی

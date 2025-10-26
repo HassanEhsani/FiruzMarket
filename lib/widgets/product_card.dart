@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_controller.dart';
+import '../l10n/app_localizations.dart';
 
 /// ✅ اکستنشن تبدیل Product به CartItem
 extension ProductCartExtension on Product {
@@ -35,12 +36,13 @@ class ProductCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.network(
+              child: Image.asset(
                 product.imageUrl,
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image, size: 60),
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.broken_image, size: 60),
               ),
             ),
             const SizedBox(width: 12),
@@ -70,8 +72,12 @@ class ProductCard extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.add_shopping_cart),
+              tooltip: 'افزودن به سبد خرید',
               onPressed: () {
-                final cart = Provider.of<CartController>(context, listen: false);
+                final cart = Provider.of<CartController>(
+                  context,
+                  listen: false,
+                );
                 cart.addItem(product.toCartItem());
 
                 ScaffoldMessenger.of(context).showSnackBar(
