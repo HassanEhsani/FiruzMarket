@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_controller.dart';
+import '../providers/product_controller.dart';
 
 extension ProductCartExtension on Product {
   CartItem toCartItem() {
@@ -25,6 +26,8 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final discount = product.discountPercent;
     final hasOldPrice = product.oldPrice != null;
+    final cart = Provider.of<CartController>(context, listen: false);
+    final productController = Provider.of<ProductController>(context);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -42,9 +45,7 @@ class ProductCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          final cart = Provider.of<CartController>(context, listen: false);
           cart.addItem(product.toCartItem());
-
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${product.name} به سبد خرید اضافه شد'),
@@ -74,7 +75,10 @@ class ProductCard extends StatelessWidget {
                       top: 4,
                       left: 4,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.deepOrange,
                           borderRadius: BorderRadius.circular(6),
@@ -129,7 +133,10 @@ class ProductCard extends StatelessWidget {
                         if (discount != null)
                           Container(
                             margin: const EdgeInsets.only(left: 8),
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.green[100],
                               borderRadius: BorderRadius.circular(6),
@@ -148,29 +155,50 @@ class ProductCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       product.category,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              IconButton(
-                icon: const Icon(Icons.add_shopping_cart),
-                tooltip: 'افزودن به سبد خرید',
-                onPressed: () {
-                  final cart = Provider.of<CartController>(context, listen: false);
-                  cart.addItem(product.toCartItem());
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${product.name} به سبد خرید اضافه شد'),
-                      duration: const Duration(seconds: 2),
+              Column(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      product.isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: product.isFavorite ? Colors.red : Colors.grey,
                     ),
-                  );
-                },
+                    tooltip: 'علاقه‌مندی',
+                    onPressed: () {
+                      productController.toggleFavorite(product);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            product.isFavorite
+                                ? '${product.name} به علاقه‌مندی‌ها اضافه شد'
+                                : '${product.name} از علاقه‌مندی‌ها حذف شد',
+                          ),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add_shopping_cart),
+                    tooltip: 'افزودن به سبد خرید',
+                    onPressed: () {
+                      cart.addItem(product.toCartItem());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${product.name} به سبد خرید اضافه شد'),
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),

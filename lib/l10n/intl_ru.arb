@@ -115,6 +115,15 @@
   "navCart": "Корзина",
   "navProfile": "Профиль",
   "productTshirt": "Футболка",
-  "productShoes": "Обувь"
+  "productShoes": "Обувь",
+  "profileTitle": "Профиль",
+  "cartTitle": "Корзина",
+  "editProfile": "Редактировать профиль",
+  "logout": "Выйти",
+  "emptyCart": "Корзина пуста",
+  "totalPrice": "Итого",
+  "payNow": "Оплатить",
+  "categoryBeauty": "Красота",
+  "categoryBooks": "Книги"
 
 }

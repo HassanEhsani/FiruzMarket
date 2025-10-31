@@ -111,4 +111,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productShoes => 'Shoes';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get cartTitle => 'Cart';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get logout => 'Log Out';
+
+  @override
+  String get emptyCart => 'Your cart is empty';
+
+  @override
+  String get totalPrice => 'Total';
+
+  @override
+  String get payNow => 'Pay Now';
+
+  @override
+  String get categoryBeauty => 'Beauty';
+
+  @override
+  String get categoryBooks => 'Books';
 }

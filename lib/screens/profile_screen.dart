@@ -1,49 +1,36 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('پروفایل کاربر'),
-        centerTitle: true,
-      ),
-      body: SafeArea(
+      appBar: AppBar(title: Text(loc.profileTitle)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.deepPurple,
-              child: const Icon(Icons.person, size: 50, color: Colors.white),
+            const CircleAvatar(
+              radius: 40,
+              backgroundImage: AssetImage('assets/images/user.png'),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'حسن احسانی',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            const SizedBox(height: 12),
+            Text('حسن رضایی', style: Theme.of(context).textTheme.titleLarge),
+            Text('hassan@example.com', style: Theme.of(context).textTheme.bodyMedium),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.edit),
+              label: Text(loc.editProfile),
             ),
-            const Text(
-              'hassan@example.com',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 30),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('تنظیمات'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.shopping_cart),
-              title: const Text('سفارش‌های من'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('خروج'),
-              onTap: () {},
+            ElevatedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.logout),
+              label: Text(loc.logout),
             ),
           ],
         ),

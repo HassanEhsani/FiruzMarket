@@ -6,6 +6,13 @@ class ProductController with ChangeNotifier {
   final List<Product> _products = [];
 
   List<Product> get products => _products;
+  void toggleFavorite(Product product) {
+    product.isFavorite = !product.isFavorite;
+    notifyListeners();
+  }
+
+  List<Product> get favoriteProducts =>
+      products.where((p) => p.isFavorite).toList();
 
   /// 🔹 استریم Firestore (در صورت فعال بودن Firebase)
   Stream<List<Product>> get productStream {
@@ -14,9 +21,11 @@ class ProductController with ChangeNotifier {
       return firestore
           .collection('products')
           .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => Product.fromMap(doc.data()))
-              .toList());
+          .map(
+            (snapshot) => snapshot.docs
+                .map((doc) => Product.fromMap(doc.data()))
+                .toList(),
+          );
     } catch (e) {
       return const Stream.empty();
     }

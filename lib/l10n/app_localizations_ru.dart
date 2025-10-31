@@ -111,4 +111,31 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get productShoes => 'Обувь';
+
+  @override
+  String get profileTitle => 'Профиль';
+
+  @override
+  String get cartTitle => 'Корзина';
+
+  @override
+  String get editProfile => 'Редактировать профиль';
+
+  @override
+  String get logout => 'Выйти';
+
+  @override
+  String get emptyCart => 'Корзина пуста';
+
+  @override
+  String get totalPrice => 'Итого';
+
+  @override
+  String get payNow => 'Оплатить';
+
+  @override
+  String get categoryBeauty => 'Красота';
+
+  @override
+  String get categoryBooks => 'Книги';
 }

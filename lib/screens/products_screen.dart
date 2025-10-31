@@ -5,6 +5,9 @@ import '../models/product.dart';
 import '../widgets/product_card.dart';
 import '../widgets/language_switcher.dart';
 import '../l10n/app_localizations.dart';
+import 'cart_screen.dart';
+import 'profile_screen.dart';
+import '../screens/favorites_screen.dart';
 
 class ProductsScreen extends StatefulWidget {
   final void Function(Locale)? onLocaleChanged;
@@ -160,9 +163,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
               _buildCategoryChip(loc.categoryClothing),
               _buildCategoryChip(loc.categoryDigital),
               _buildCategoryChip(loc.categoryHome),
-              _buildCategoryChip('زیبایی'),
+              _buildCategoryChip(loc.categoryBeauty),
               _buildCategoryChip(loc.categorySports),
-              _buildCategoryChip('کتاب'),
+              _buildCategoryChip(loc.categoryBooks),
             ],
           ),
         ),
@@ -182,6 +185,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 
   Widget buildBottomNavBar() {
+    final loc = AppLocalizations.of(context);
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.white,
@@ -189,34 +194,42 @@ class _ProductsScreenState extends State<ProductsScreen> {
       unselectedItemColor: Colors.grey,
       currentIndex: selectedIndex,
       onTap: (index) {
-        setState(() {
-          selectedIndex = index;
-        });
-      },
+  setState(() {
+    selectedIndex = index;
+  });
+
+  if (index == 4) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const CartScreen()));
+  } else if (index == 5) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen()));
+  } else if (index == 3) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen()));
+  }
+},
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home),
-          label: AppLocalizations.of(context).navHome,
+          label: loc.navHome,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.egg),
-          label: AppLocalizations.of(context).navSpecial,
+          label: loc.navSpecial,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.local_grocery_store),
-          label: AppLocalizations.of(context).navFood,
+          label: loc.navFood,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.favorite_border),
-          label: AppLocalizations.of(context).navFavorites,
+          label: loc.navFavorites,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.shopping_cart),
-          label: AppLocalizations.of(context).navCart,
+          label: loc.navCart,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person),
-          label: AppLocalizations.of(context).navProfile,
+          label: loc.navProfile,
         ),
       ],
     );

@@ -303,6 +303,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shoes'**
   String get productShoes;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @cartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cart'**
+  String get cartTitle;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logout;
+
+  /// No description provided for @emptyCart.
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get emptyCart;
+
+  /// No description provided for @totalPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get totalPrice;
+
+  /// No description provided for @payNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get payNow;
+
+  /// No description provided for @categoryBeauty.
+  ///
+  /// In en, this message translates to:
+  /// **'Beauty'**
+  String get categoryBeauty;
+
+  /// No description provided for @categoryBooks.
+  ///
+  /// In en, this message translates to:
+  /// **'Books'**
+  String get categoryBooks;
 }
 
 class _AppLocalizationsDelegate

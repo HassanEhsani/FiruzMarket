@@ -115,6 +115,16 @@
   "navCart": "Cart",
   "navProfile": "Profile",
   "productTshirt": "T-shirt",
-  "productShoes": "Shoes"
+  "productShoes": "Shoes",
+  "profileTitle": "Profile",
+  "cartTitle": "Cart",
+  "editProfile": "Edit Profile",
+  "logout": "Log Out",
+  "emptyCart": "Your cart is empty",
+  "totalPrice": "Total",
+  "payNow": "Pay Now",
+  "categoryBeauty": "Beauty",
+  "categoryBooks": "Books"
+
 
 }

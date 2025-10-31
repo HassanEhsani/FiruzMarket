@@ -22,8 +22,8 @@ class CartController with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(String id) {
-    _items.removeWhere((item) => item.id == id);
+  void removeItem(CartItem item) {
+    items.remove(item);
     notifyListeners();
   }
 

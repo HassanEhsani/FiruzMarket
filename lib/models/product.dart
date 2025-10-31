@@ -5,6 +5,7 @@ class Product {
   final String imageUrl;
   final String category;
   final bool isFeatured; // برای نمایش برچسب "پیشنهاد ویژه"
+  bool isFavorite;
 
   Product({
     required this.name,
@@ -13,6 +14,7 @@ class Product {
     required this.imageUrl,
     required this.category,
     this.isFeatured = false,
+    this.isFavorite = false, // مقدار پیش‌فرض
   });
 
   factory Product.fromMap(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class Product {
       imageUrl: map['imageUrl'] ?? '',
       category: map['category'] ?? '',
       isFeatured: map['isFeatured'] ?? false,
+      isFavorite: map['isFavorite'] ?? false, // ✅ اضافه شده
     );
   }
 
@@ -34,6 +37,7 @@ class Product {
       'imageUrl': imageUrl,
       'category': category,
       'isFeatured': isFeatured,
+      'isFavorite': isFavorite, // ✅ اضافه شده
     };
   }
 

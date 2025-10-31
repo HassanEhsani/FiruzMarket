@@ -115,5 +115,14 @@
   "navCart": "سبد خرید",
   "navProfile": "پروفایل",
   "productTshirt": "تی‌شرت",
-  "productShoes": "کفش"
+  "productShoes": "کفش",
+  "profileTitle": "پروفایل",
+  "cartTitle": "سبد خرید",
+  "editProfile": "ویرایش اطلاعات",
+  "logout": "خروج از حساب",
+  "emptyCart": "سبد خرید خالی است",
+  "totalPrice": "جمع کل",
+  "payNow": "پرداخت",
+  "categoryBeauty": "زیبایی",
+  "categoryBooks": "کتاب"
 }

@@ -111,4 +111,31 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get productShoes => 'کفش';
+
+  @override
+  String get profileTitle => 'پروفایل';
+
+  @override
+  String get cartTitle => 'سبد خرید';
+
+  @override
+  String get editProfile => 'ویرایش اطلاعات';
+
+  @override
+  String get logout => 'خروج از حساب';
+
+  @override
+  String get emptyCart => 'سبد خرید خالی است';
+
+  @override
+  String get totalPrice => 'جمع کل';
+
+  @override
+  String get payNow => 'پرداخت';
+
+  @override
+  String get categoryBeauty => 'زیبایی';
+
+  @override
+  String get categoryBooks => 'کتاب';
 }
