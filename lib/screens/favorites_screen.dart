@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_controller.dart';
+import '../providers/cart_controller.dart';
+import '../models/cart_item.dart';
 import '../widgets/product_card.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -8,8 +10,9 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<ProductController>(context);
-    final favorites = controller.favoriteProducts;
+    final productController = context.watch<ProductController>();
+    final cartController = context.read<CartController>();
+    final favorites = productController.favoriteProducts;
 
     return Scaffold(
       appBar: AppBar(title: const Text('علاقه‌مندی‌ها')),
@@ -18,7 +21,37 @@ class FavoritesScreen extends StatelessWidget {
           : ListView.builder(
               itemCount: favorites.length,
               itemBuilder: (context, index) {
-                return ProductCard(product: favorites[index]);
+                final product = favorites[index];
+
+                return Column(
+                  children: [
+                    ProductCard(product: product),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.add_shopping_cart),
+                            label: const Text('افزودن به سبد خرید'),
+                            onPressed: () {
+                              cartController.addItem(product.toCartItem());
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      '${product.name} به سبد خرید اضافه شد'),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                  ],
+                );
               },
             ),
     );

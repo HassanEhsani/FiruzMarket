@@ -7,19 +7,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'providers/product_controller.dart';
 import 'providers/cart_controller.dart';
 import 'screens/products_screen.dart';
+import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
-import 'widgets/language_switcher.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // 🔹 مقداردهی اولیه Firebase
   await Firebase.initializeApp();
 
-  // 🔹 اتصال به شبیه‌ساز Firestore (پورت پیش‌فرض: 8080)
+  // برای شبیه‌ساز Firestore (اختیاری)
   FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8084);
 
-  // 🔹 مقداردهی اولیه کنترلر محصول با داده‌های تستی
   final productController = ProductController();
   productController.initSampleProducts();
 
@@ -66,12 +63,16 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF4CAF50),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: ProductsScreen(onLocaleChanged: changeLocale),
+      // از تابع سازنده (non-const) استفاده می‌کنیم تا context صحیح داشته باشد
+      routes: {
+        '/cart': (context) => CartScreen(showBackButton: true),
+      },
     );
   }
 }

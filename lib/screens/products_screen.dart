@@ -1,3 +1,4 @@
+// 🛍 products_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_controller.dart';
@@ -5,9 +6,9 @@ import '../models/product.dart';
 import '../widgets/product_card.dart';
 import '../widgets/language_switcher.dart';
 import '../l10n/app_localizations.dart';
-import 'cart_screen.dart';
 import 'profile_screen.dart';
 import '../screens/favorites_screen.dart';
+import '../screens/cart_screen.dart';
 
 class ProductsScreen extends StatefulWidget {
   final void Function(Locale)? onLocaleChanged;
@@ -129,61 +130,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
-  Widget buildHeaderSection(BuildContext context) {
-    final loc = AppLocalizations.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: loc.searchHint,
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: const Icon(Icons.mic),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          height: 48,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            children: [
-              _buildCategoryChip(loc.categoryClothing),
-              _buildCategoryChip(loc.categoryDigital),
-              _buildCategoryChip(loc.categoryHome),
-              _buildCategoryChip(loc.categoryBeauty),
-              _buildCategoryChip(loc.categorySports),
-              _buildCategoryChip(loc.categoryBooks),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCategoryChip(String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
-      child: Chip(
-        label: Text(label),
-        backgroundColor: Colors.grey[200],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      ),
-    );
-  }
-
   Widget buildBottomNavBar() {
     final loc = AppLocalizations.of(context);
 
@@ -194,18 +140,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
       unselectedItemColor: Colors.grey,
       currentIndex: selectedIndex,
       onTap: (index) {
-  setState(() {
-    selectedIndex = index;
-  });
+        setState(() => selectedIndex = index);
 
-  if (index == 4) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const CartScreen()));
-  } else if (index == 5) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen()));
-  } else if (index == 3) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen()));
-  }
-},
+        if (index == 4) {
+          Navigator.pushNamed(context, '/cart');
+        } else if (index == 5) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+          );
+        } else if (index == 3) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const FavoritesScreen()),
+          );
+        }
+      },
       items: [
         BottomNavigationBarItem(
           icon: const Icon(Icons.home),
@@ -251,14 +201,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-
                   if (snapshot.hasError) {
                     return const Center(child: Text('خطا در دریافت محصولات'));
                   }
-
-                  final streamProducts = snapshot.data ?? [];
-
-                  return buildFullPage(context, streamProducts);
+                  return buildFullPage(context, snapshot.data ?? []);
                 },
               );
             }
@@ -281,9 +227,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
             padding: const EdgeInsets.only(bottom: 12),
             itemCount: products.length,
             separatorBuilder: (_, __) => const SizedBox(height: 4),
-            itemBuilder: (context, index) {
-              return ProductCard(product: products[index]);
-            },
+            itemBuilder: (context, index) =>
+                ProductCard(product: products[index]),
           ),
         ),
       ],

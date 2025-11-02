@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import '../admin/admin_dashboard.dart';
+import '../screens/cart_screen.dart';
+import '../models/cart_item.dart';
+import '../providers/cart_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,21 +22,48 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: const Color(0xFF4CAF50),
-        title: Row(
+        title: const Row(
           children: [
-            const Icon(Icons.storefront, size: 28),
-            const SizedBox(width: 8),
-            const Text('FiruzMarket'),
-            const Spacer(),
-            IconButton(icon: const Icon(Icons.favorite_border), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.shopping_cart_outlined), onPressed: () {}),
-            IconButton(icon: const Icon(Icons.login), onPressed: () {
+            Icon(Icons.storefront, size: 28),
+            SizedBox(width: 8),
+            Text('FiruzMarket'),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite_border),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              final cart = Provider.of<CartController>(context, listen: false);
+              cart.addItem(CartItem(
+                id: '1',
+                name: 'سیب قرمز',
+                price: 25000,
+                quantity: 2,
+                imageUrl: 'assets/images/apple.png',
+                discountPrice: 23000,
+                deliveryType: 'ارسال فوری',
+                storeName: 'میوه‌فروشی بهار',
+              ));
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CartScreen()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.login),
+            onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('ورود / عضویت هنوز فعال نشده')),
               );
-            }),
-          ],
-        ),
+            },
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56),
           child: Padding(
@@ -46,7 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
                 ),
@@ -86,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {
                       setState(() => _showWelcomeBanner = false);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('ورود / عضویت هنوز فعال نشده')),
+                        const SnackBar(
+                          content: Text('ورود / عضویت هنوز فعال نشده'),
+                        ),
                       );
                     },
                     child: const Text('ورود / عضویت'),
@@ -126,7 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     return Card(
                       elevation: 3,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [

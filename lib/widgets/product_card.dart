@@ -1,18 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../models/cart_item.dart';
 import '../providers/cart_controller.dart';
 import '../providers/product_controller.dart';
+import '../screens/cart_screen.dart';
 
 extension ProductCartExtension on Product {
   CartItem toCartItem() {
+    // اگر id محصول تهی باشد از name به عنوان fallback استفاده کن
+    final itemId = (id == null || id.toString().trim().isEmpty) ? name : id;
     return CartItem(
-      id: name,
+      id: itemId.toString(),
       name: name,
       price: price.toDouble(),
       quantity: 1,
       imageUrl: imageUrl,
+      storeName: storeName ?? 'بدون فروشگاه',
+      // discountPrice: discountPrice,
+      // deliveryType: deliveryType,
+      selected: true,
     );
   }
 }
@@ -26,8 +34,20 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final discount = product.discountPercent;
     final hasOldPrice = product.oldPrice != null;
-    final cart = Provider.of<CartController>(context, listen: false);
-    final productController = Provider.of<ProductController>(context);
+
+    // 🔒 استفاده از context.read برای گرفتن Controller (بدون listen)
+    final cartController = context.read<CartController>();
+    final productController = Provider.of<ProductController>(context, listen: false);
+
+    void addToCartAndDebug() {
+      cartController.addItem(product.toCartItem());
+
+      // چاپ دیباگ برای بررسی اینکه آیتم واقعا به لیست اضافه شده
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print('🛒 after addItem -> cart items: ${cartController.items}');
+      }
+    }
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -45,10 +65,10 @@ class ProductCard extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: () {
-          cart.addItem(product.toCartItem());
+          addToCartAndDebug();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${product.name} به سبد خرید اضافه شد'),
+              content: Text('${product.name} به سبد خرید اضافه شد 🛒'),
               duration: const Duration(seconds: 2),
             ),
           );
@@ -164,20 +184,17 @@ class ProductCard extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(
-                      product.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
+                      product.isFavorite ? Icons.favorite : Icons.favorite_border,
                       color: product.isFavorite ? Colors.red : Colors.grey,
                     ),
                     tooltip: 'علاقه‌مندی',
                     onPressed: () {
                       productController.toggleFavorite(product);
-
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
                             product.isFavorite
-                                ? '${product.name} به علاقه‌مندی‌ها اضافه شد'
+                                ? '${product.name} به علاقه‌مندی‌ها اضافه شد ❤️'
                                 : '${product.name} از علاقه‌مندی‌ها حذف شد',
                           ),
                           duration: const Duration(seconds: 2),
@@ -189,10 +206,10 @@ class ProductCard extends StatelessWidget {
                     icon: const Icon(Icons.add_shopping_cart),
                     tooltip: 'افزودن به سبد خرید',
                     onPressed: () {
-                      cart.addItem(product.toCartItem());
+                      addToCartAndDebug();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('${product.name} به سبد خرید اضافه شد'),
+                          content: Text('${product.name} به سبد خرید اضافه شد 🛒'),
                           duration: const Duration(seconds: 2),
                         ),
                       );

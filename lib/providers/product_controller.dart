@@ -6,6 +6,7 @@ class ProductController with ChangeNotifier {
   final List<Product> _products = [];
 
   List<Product> get products => _products;
+
   void toggleFavorite(Product product) {
     product.isFavorite = !product.isFavorite;
     notifyListeners();
@@ -35,33 +36,41 @@ class ProductController with ChangeNotifier {
   void initSampleProducts() {
     _products.addAll([
       Product(
+        id: 'p1',
         name: 'تی‌شرت سفید',
         price: 320,
         oldPrice: 450,
         imageUrl: 'assets/images/tshirt.png',
         category: 'پوشاک',
         isFeatured: true,
+        storeName: 'پوشاک جوان',
       ),
       Product(
+        id: 'p2',
         name: 'شلوار جین',
         price: 580,
         oldPrice: 720,
         imageUrl: 'assets/images/jeans.png',
         category: 'پوشاک',
+        storeName: 'پوشاک جوان',
       ),
       Product(
+        id: 'p3',
         name: 'گوشی هوشمند',
         price: 8900,
         oldPrice: 10500,
         imageUrl: 'assets/images/phone.png',
         category: 'دیجیتال',
         isFeatured: true,
+        storeName: 'دیجیتال مارکت',
       ),
       Product(
+        id: 'p4',
         name: 'لپ‌تاپ Core i5',
         price: 19800,
         imageUrl: 'assets/images/laptop.png',
         category: 'دیجیتال',
+        storeName: 'دیجیتال مارکت',
       ),
     ]);
     notifyListeners();
