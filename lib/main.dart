@@ -10,12 +10,13 @@ import 'screens/products_screen.dart';
 import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  // برای شبیه‌ساز Firestore (اختیاری)
-  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8084);
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
   final productController = ProductController();
   productController.initSampleProducts();
