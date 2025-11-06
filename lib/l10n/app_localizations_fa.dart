@@ -138,4 +138,13 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get categoryBooks => 'کتاب';
+
+  @override
+  String get adminWelcome => 'خوش آمدید، لطفاً وارد شوید';
+
+  @override
+  String get enterPassword => 'رمز عبور را وارد کنید';
+
+  @override
+  String get login => 'ورود';
 }

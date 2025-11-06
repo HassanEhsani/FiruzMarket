@@ -138,4 +138,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get categoryBooks => 'Книги';
+
+  @override
+  String get adminWelcome => 'Добро пожаловать, пожалуйста, войдите';
+
+  @override
+  String get enterPassword => 'Введите пароль администратора';
+
+  @override
+  String get login => 'Войти';
 }

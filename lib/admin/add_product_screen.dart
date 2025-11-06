@@ -24,26 +24,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   String normalizeNumber(String input) {
     const faToEn = {
-      '۰': '0',
-      '۱': '1',
-      '۲': '2',
-      '۳': '3',
-      '۴': '4',
-      '۵': '5',
-      '۶': '6',
-      '۷': '7',
-      '۸': '8',
-      '۹': '9',
-      '٠': '0',
-      '١': '1',
-      '٢': '2',
-      '٣': '3',
-      '٤': '4',
-      '٥': '5',
-      '٦': '6',
-      '٧': '7',
-      '٨': '8',
-      '٩': '9',
+      '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
+      '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9',
+      '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+      '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9',
     };
     return input.split('').map((char) => faToEn[char] ?? char).join();
   }
@@ -69,9 +53,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (pathStr == null || pathStr.contains('/assets/')) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text(
-              'لطفاً تصویر را از کامپیوتر انتخاب کنید، نه از assets پروژه',
-            ),
+            content: const Text('لطفاً تصویر را از کامپیوتر انتخاب کنید، نه از assets پروژه'),
             backgroundColor: Colors.red.shade400,
           ),
         );
@@ -124,14 +106,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final originalName = kIsWeb
           ? _webImage!.name
           : path.basename(_selectedImage!.path);
-      final ext = originalName.contains('.')
-          ? originalName.split('.').last
-          : 'jpg';
+      final ext = originalName.contains('.') ? originalName.split('.').last : 'jpg';
       final imageName = '$uuid.$ext';
 
-      final storageRef = FirebaseStorage.instance.ref(
-        'product_images/$imageName',
-      );
+      final storageRef = FirebaseStorage.instance.ref('product_images/$imageName');
       debugPrint('Uploading to: product_images/$imageName');
 
       final metadata = SettableMetadata(contentType: 'image/$ext');
@@ -140,9 +118,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (kIsWeb) {
         final bytes = _webImage!.bytes;
         if (bytes == null || bytes.isEmpty) {
-          throw Exception(
-            'فایل وب bytes ندارد. انتخاب تصویر را دوباره انجام دهید.',
-          );
+          throw Exception('فایل وب bytes ندارد. انتخاب تصویر را دوباره انجام دهید.');
         }
         uploadTask = storageRef.putData(bytes, metadata);
       } else {
@@ -150,16 +126,29 @@ class _AddProductScreenState extends State<AddProductScreen> {
       }
 
       final snapshot = await uploadTask;
-      debugPrint(
-        'Upload state: ${snapshot.state}, bytesTransferred=${snapshot.bytesTransferred}',
-      );
+      debugPrint('Upload state: ${snapshot.state}, bytesTransferred=${snapshot.bytesTransferred}');
 
       if (snapshot.state != TaskState.success) {
         throw Exception('آپلود تصویر موفق نبود. وضعیت: ${snapshot.state}');
       }
 
-      final imageUrl = await storageRef.getDownloadURL();
-      debugPrint('Image URL: $imageUrl');
+      // 🔹 اصلاح‌شده برای کار با Emulator
+      String imageUrl;
+      try {
+        // در محیط emulator برای Web، getDownloadURL ممکن است کار نکند
+        imageUrl = await storageRef.getDownloadURL().timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            debugPrint('⚠️ Emulator getDownloadURL() timed out — using fake URL');
+            return 'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
+          },
+        );
+      } catch (e) {
+        debugPrint('⚠️ getDownloadURL() failed on emulator: $e');
+        imageUrl = 'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
+      }
+
+      debugPrint('✅ Final image URL: $imageUrl');
 
       await FirebaseFirestore.instance.collection('products').add({
         'name': _nameController.text.trim(),
@@ -198,11 +187,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     final preview = kIsWeb
         ? (_webImage != null
-              ? Image.memory(_webImage!.bytes!, height: 180, fit: BoxFit.cover)
-              : null)
+            ? Image.memory(_webImage!.bytes!, height: 180, fit: BoxFit.cover)
+            : null)
         : (_selectedImage != null
-              ? Image.file(_selectedImage!, height: 180, fit: BoxFit.cover)
-              : null);
+            ? Image.file(_selectedImage!, height: 180, fit: BoxFit.cover)
+            : null);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -230,9 +219,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: 'نام محصول',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'نام را وارد کنید'
-                      : null,
+                  validator: (value) => value == null || value.isEmpty ? 'نام را وارد کنید' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -242,9 +229,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'قیمت را وارد کنید'
-                      : null,
+                  validator: (value) => value == null || value.isEmpty ? 'قیمت را وارد کنید' : null,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
@@ -256,9 +241,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 if (preview != null)
                   Container(
                     height: 180,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                    ),
+                    decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: preview,
                   ),
                 const SizedBox(height: 16),
@@ -273,10 +256,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return const Text(
-                        'هیچ دسته‌ای یافت نشد',
-                        style: TextStyle(color: Colors.red),
-                      );
+                      return const Text('هیچ دسته‌ای یافت نشد', style: TextStyle(color: Colors.red));
                     }
 
                     final categories = snapshot.data!.docs
@@ -284,8 +264,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         .toSet()
                         .toList();
 
-                    if (selectedCategory != null &&
-                        !categories.contains(selectedCategory)) {
+                    if (selectedCategory != null && !categories.contains(selectedCategory)) {
                       selectedCategory = null;
                     }
 
@@ -303,10 +282,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             ),
                           )
                           .toList(),
-                      onChanged: (value) =>
-                          setState(() => selectedCategory = value),
-                      validator: (value) =>
-                          value == null ? 'دسته‌بندی را انتخاب کنید' : null,
+                      onChanged: (value) => setState(() => selectedCategory = value),
+                      validator: (value) => value == null ? 'دسته‌بندی را انتخاب کنید' : null,
                     );
                   },
                 ),

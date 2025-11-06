@@ -124,6 +124,9 @@
   "totalPrice": "Итого",
   "payNow": "Оплатить",
   "categoryBeauty": "Красота",
-  "categoryBooks": "Книги"
+  "categoryBooks": "Книги",
+  "adminWelcome": "Добро пожаловать, пожалуйста, войдите",
+  "enterPassword": "Введите пароль администратора",
+  "login": "Войти"
 
 }

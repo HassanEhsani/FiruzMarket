@@ -357,6 +357,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Books'**
   String get categoryBooks;
+
+  /// No description provided for @adminWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, please log in'**
+  String get adminWelcome;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter admin password'**
+  String get enterPassword;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
 }
 
 class _AppLocalizationsDelegate

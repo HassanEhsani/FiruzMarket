@@ -124,7 +124,8 @@
   "totalPrice": "Total",
   "payNow": "Pay Now",
   "categoryBeauty": "Beauty",
-  "categoryBooks": "Books"
-
-
+  "categoryBooks": "Books",
+  "adminWelcome": "Welcome, please log in",
+  "enterPassword": "Enter admin password",
+  "login": "Login"
 }

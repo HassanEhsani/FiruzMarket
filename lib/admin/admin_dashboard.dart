@@ -23,7 +23,7 @@ class AdminDashboard extends StatelessWidget {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (_) => const AdminLoginScreen()),
+                MaterialPageRoute(builder: (_) => const AdminLoginScreen(selectedLocale: Locale('fa'))),
                 (route) => false,
               );
             },

@@ -138,4 +138,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryBooks => 'Books';
+
+  @override
+  String get adminWelcome => 'Welcome, please log in';
+
+  @override
+  String get enterPassword => 'Enter admin password';
+
+  @override
+  String get login => 'Login';
 }

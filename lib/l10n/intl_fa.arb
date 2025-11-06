@@ -124,5 +124,9 @@
   "totalPrice": "جمع کل",
   "payNow": "پرداخت",
   "categoryBeauty": "زیبایی",
-  "categoryBooks": "کتاب"
+  "categoryBooks": "کتاب",
+  "adminWelcome": "خوش آمدید، لطفاً وارد شوید",
+  "enterPassword": "رمز عبور را وارد کنید",
+  "login": "ورود"
+
 }

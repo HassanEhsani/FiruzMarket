@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'providers/product_controller.dart';
@@ -10,14 +11,23 @@ import 'screens/products_screen.dart';
 import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
 
-import 'firebase_options.dart';
+// ❌ فایل options واقعی را حذف یا کامنت کن تا به پروژه آنلاین متصل نشود
+// import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
 
+  // 🚀 مقداردهی اولیه Firebase (بدون options)
+  await Firebase.initializeApp();
+
+  // 🧩 اتصال به شبیه‌ساز Firestore و Storage
+  FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8084);
+  FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9198);
+
+  print('✅ Connected to Firestore Emulator on 127.0.0.1:8084');
+  print('✅ Connected to Storage Emulator on 127.0.0.1:9198');
+
+  // 🛒 مقداردهی اولیه کنترلرها
   final productController = ProductController();
   productController.initSampleProducts();
 
@@ -57,7 +67,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: _locale,
-      supportedLocales: const [Locale('fa'), Locale('ru'), Locale('en')],
+      supportedLocales: const [
+        Locale('fa'),
+        Locale('ru'),
+        Locale('en'),
+      ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -70,7 +84,6 @@ class _MyAppState extends State<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       home: ProductsScreen(onLocaleChanged: changeLocale),
-      // از تابع سازنده (non-const) استفاده می‌کنیم تا context صحیح داشته باشد
       routes: {
         '/cart': (context) => CartScreen(showBackButton: true),
       },
