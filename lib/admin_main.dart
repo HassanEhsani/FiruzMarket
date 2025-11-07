@@ -1,32 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'firebase_options.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'admin/admin_language_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'firebase_options.dart'; // فعال شده ✅
+import 'providers/product_controller.dart';
+import 'providers/cart_controller.dart';
+import 'screens/products_screen.dart';
+import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
-  runApp(const AdminApp());
+  // 🔹 برای وب باید options اضافه شود
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // 🔹 اتصال به Firestore Emulator
+  FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8084);
+
+  // 🔹 اتصال به Storage Emulator
+  FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9198);
+
+  print('✅ Connected to Firebase Emulators');
+
+  final productController = ProductController();
+  productController.initSampleProducts();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => productController),
+        ChangeNotifierProvider(create: (_) => CartController()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class AdminApp extends StatefulWidget {
-  const AdminApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.changeLocale(newLocale);
+  }
 
   @override
-  State<AdminApp> createState() => _AdminAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _AdminAppState extends State<AdminApp> {
+class _MyAppState extends State<MyApp> {
   Locale _locale = const Locale('fa');
 
-  void _setLocale(Locale locale) {
+  void changeLocale(Locale newLocale) {
     setState(() {
-      _locale = locale;
+      _locale = newLocale;
     });
   }
 
@@ -34,19 +65,20 @@ class _AdminAppState extends State<AdminApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: _locale,
-      supportedLocales: const [
-        Locale('fa'),
-        Locale('en'),
-        Locale('ru'),
-      ],
+      supportedLocales: const [Locale('fa'), Locale('ru'), Locale('en')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xFF4CAF50),
+        useMaterial3: true,
+      ),
       debugShowCheckedModeBanner: false,
-      home: AdminLanguageScreen(onLanguageSelected: _setLocale),
+      home: ProductsScreen(onLocaleChanged: changeLocale),
+      routes: {'/cart': (context) => CartScreen(showBackButton: true)},
     );
   }
 }

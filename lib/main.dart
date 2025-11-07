@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,29 +7,53 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'firebase_options.dart';
 import 'providers/product_controller.dart';
 import 'providers/cart_controller.dart';
 import 'screens/products_screen.dart';
 import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
 
-// ❌ فایل options واقعی را حذف یا کامنت کن تا به پروژه آنلاین متصل نشود
-// import 'firebase_options.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 🚀 مقداردهی اولیه Firebase (بدون options)
-  await Firebase.initializeApp();
+  // ✅ بررسی دقیق‌تر برای جلوگیری از duplicate-app
+  FirebaseApp app;
+  try {
+    if (Firebase.apps.isEmpty) {
+      app = await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      print("✅ Firebase initialized (fresh)");
+    } else {
+      app = Firebase.apps.first;
+      print("♻️ Using existing Firebase app: ${app.name}");
+    }
+  } catch (e) {
+    print("⚠️ Firebase already initialized, skipping: $e");
+    app = Firebase.apps.first;
+  }
 
-  // 🧩 اتصال به شبیه‌ساز Firestore و Storage
-  FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8084);
-  FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9198);
+  // 🧩 تشخیص host بر اساس پلتفرم
+  String host;
+  if (kIsWeb) {
+    host = '127.0.0.1';
+  } else if (Platform.isAndroid) {
+    host = '10.0.2.2'; // مخصوص Emulator اندروید
+  } else {
+    host = '127.0.0.1';
+  }
 
-  print('✅ Connected to Firestore Emulator on 127.0.0.1:8084');
-  print('✅ Connected to Storage Emulator on 127.0.0.1:9198');
+  // 🚀 اتصال به Emulator
+  try {
+    FirebaseFirestore.instance.useFirestoreEmulator(host, 8084);
+    FirebaseStorage.instance.useStorageEmulator(host, 9198);
+    print('✅ Connected to Firebase Emulators at $host');
+  } catch (e) {
+    print('⚠️ Emulator connection failed: $e');
+  }
 
-  // 🛒 مقداردهی اولیه کنترلرها
+  // 🛒 کنترلرها
   final productController = ProductController();
   productController.initSampleProducts();
 

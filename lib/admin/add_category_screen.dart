@@ -20,7 +20,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     }
 
     try {
-      await Provider.of<CategoryController>(context, listen: false).addCategory(name);
+      await Provider.of<CategoryController>(
+        context,
+        listen: false,
+      ).addCategory(name);
       _controller.clear();
       debugPrint('✅ دسته به Firestore اضافه شد: $name');
     } catch (e) {
@@ -30,7 +33,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
   void _deleteCategory(String name) async {
     try {
-      await Provider.of<CategoryController>(context, listen: false).deleteCategory(name);
+      await Provider.of<CategoryController>(
+        context,
+        listen: false,
+      ).deleteCategory(name);
       debugPrint('🗑️ دسته حذف شد: $name');
     } catch (e) {
       debugPrint('❌ خطا در حذف دسته: ${e.toString()}');
@@ -42,27 +48,57 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     final categoryController = Provider.of<CategoryController>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('افزودن دسته‌بندی')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('افزودن دسته‌بندی'),
+        backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
+        centerTitle: true,
+        elevation: 0,
+        foregroundColor: Colors.black87,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: _controller,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'نام دسته‌بندی',
-                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey.shade100,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
             ),
             const SizedBox(height: 16),
             ElevatedButton.icon(
-              icon: const Icon(Icons.add),
-              label: const Text('افزودن'),
+              icon: const Icon(Icons.add, color: Colors.black87),
+              label: const Text(
+                'افزودن',
+                style: TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFB2DFDB),
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
               onPressed: _addCategory,
             ),
-            const SizedBox(height: 24),
-            const Text('دسته‌بندی‌های فعلی:', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
+            const SizedBox(height: 32),
+            const Text(
+              'دسته‌بندی‌های فعلی:',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 12),
             Expanded(
               child: StreamBuilder<List<String>>(
                 stream: categoryController.categoryStream,
@@ -73,18 +109,49 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
                   final categories = snapshot.data!;
                   if (categories.isEmpty) {
-                    return const Center(child: Text('هیچ دسته‌ای یافت نشد'));
+                    return const Center(
+                      child: Text(
+                        'هیچ دسته‌ای یافت نشد',
+                        style: TextStyle(fontSize: 14, color: Colors.black54),
+                      ),
+                    );
                   }
 
                   return ListView.builder(
                     itemCount: categories.length,
                     itemBuilder: (_, index) {
                       final name = categories[index];
-                      return ListTile(
-                        title: Text(name),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () => _deleteCategory(name),
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.05),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          title: Text(
+                            name,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => _deleteCategory(name),
+                          ),
                         ),
                       );
                     },

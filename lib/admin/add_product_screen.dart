@@ -24,10 +24,26 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   String normalizeNumber(String input) {
     const faToEn = {
-      '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4',
-      '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9',
-      '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
-      '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9',
+      '۰': '0',
+      '۱': '1',
+      '۲': '2',
+      '۳': '3',
+      '۴': '4',
+      '۵': '5',
+      '۶': '6',
+      '۷': '7',
+      '۸': '8',
+      '۹': '9',
+      '٠': '0',
+      '١': '1',
+      '٢': '2',
+      '٣': '3',
+      '٤': '4',
+      '٥': '5',
+      '٦': '6',
+      '٧': '7',
+      '٨': '8',
+      '٩': '9',
     };
     return input.split('').map((char) => faToEn[char] ?? char).join();
   }
@@ -53,7 +69,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (pathStr == null || pathStr.contains('/assets/')) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('لطفاً تصویر را از کامپیوتر انتخاب کنید، نه از assets پروژه'),
+            content: const Text(
+              'لطفاً تصویر را از کامپیوتر انتخاب کنید، نه از assets پروژه',
+            ),
             backgroundColor: Colors.red.shade400,
           ),
         );
@@ -106,10 +124,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
       final originalName = kIsWeb
           ? _webImage!.name
           : path.basename(_selectedImage!.path);
-      final ext = originalName.contains('.') ? originalName.split('.').last : 'jpg';
+      final ext = originalName.contains('.')
+          ? originalName.split('.').last
+          : 'jpg';
       final imageName = '$uuid.$ext';
 
-      final storageRef = FirebaseStorage.instance.ref('product_images/$imageName');
+      final storageRef = FirebaseStorage.instance.ref(
+        'product_images/$imageName',
+      );
       debugPrint('Uploading to: product_images/$imageName');
 
       final metadata = SettableMetadata(contentType: 'image/$ext');
@@ -118,7 +140,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (kIsWeb) {
         final bytes = _webImage!.bytes;
         if (bytes == null || bytes.isEmpty) {
-          throw Exception('فایل وب bytes ندارد. انتخاب تصویر را دوباره انجام دهید.');
+          throw Exception(
+            'فایل وب bytes ندارد. انتخاب تصویر را دوباره انجام دهید.',
+          );
         }
         uploadTask = storageRef.putData(bytes, metadata);
       } else {
@@ -126,7 +150,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
       }
 
       final snapshot = await uploadTask;
-      debugPrint('Upload state: ${snapshot.state}, bytesTransferred=${snapshot.bytesTransferred}');
+      debugPrint(
+        'Upload state: ${snapshot.state}, bytesTransferred=${snapshot.bytesTransferred}',
+      );
 
       if (snapshot.state != TaskState.success) {
         throw Exception('آپلود تصویر موفق نبود. وضعیت: ${snapshot.state}');
@@ -139,13 +165,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
         imageUrl = await storageRef.getDownloadURL().timeout(
           const Duration(seconds: 10),
           onTimeout: () {
-            debugPrint('⚠️ Emulator getDownloadURL() timed out — using fake URL');
+            debugPrint(
+              '⚠️ Emulator getDownloadURL() timed out — using fake URL',
+            );
             return 'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
           },
         );
       } catch (e) {
         debugPrint('⚠️ getDownloadURL() failed on emulator: $e');
-        imageUrl = 'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
+        imageUrl =
+            'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
       }
 
       debugPrint('✅ Final image URL: $imageUrl');
@@ -187,61 +216,93 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     final preview = kIsWeb
         ? (_webImage != null
-            ? Image.memory(_webImage!.bytes!, height: 180, fit: BoxFit.cover)
-            : null)
+              ? Image.memory(_webImage!.bytes!, height: 180, fit: BoxFit.cover)
+              : null)
         : (_selectedImage != null
-            ? Image.file(_selectedImage!, height: 180, fit: BoxFit.cover)
-            : null);
+              ? Image.file(_selectedImage!, height: 180, fit: BoxFit.cover)
+              : null);
 
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('افزودن محصول'),
-          backgroundColor: const Color(0xFF4CAF50),
+          backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
           centerTitle: true,
+          elevation: 0,
+          foregroundColor: Colors.black87,
         ),
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
           child: Form(
             key: _formKey,
             child: ListView(
               children: [
                 const Text(
                   'اطلاعات محصول را وارد کنید',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'نام محصول',
-                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
-                  validator: (value) => value == null || value.isEmpty ? 'نام را وارد کنید' : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'نام را وارد کنید'
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _priceController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'قیمت (روبل)',
-                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.grey.shade100,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value == null || value.isEmpty ? 'قیمت را وارد کنید' : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'قیمت را وارد کنید'
+                      : null,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   icon: const Icon(Icons.image),
                   label: const Text('انتخاب تصویر از کامپیوتر'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFB2DFDB),
+                    foregroundColor: Colors.black87,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 0,
+                  ),
                   onPressed: _pickImage,
                 ),
                 const SizedBox(height: 12),
                 if (preview != null)
                   Container(
                     height: 180,
-                    decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                    margin: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    clipBehavior: Clip.hardEdge,
                     child: preview,
                   ),
                 const SizedBox(height: 16),
@@ -256,7 +317,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                      return const Text('هیچ دسته‌ای یافت نشد', style: TextStyle(color: Colors.red));
+                      return const Text(
+                        'هیچ دسته‌ای یافت نشد',
+                        style: TextStyle(color: Colors.red),
+                      );
                     }
 
                     final categories = snapshot.data!.docs
@@ -264,15 +328,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         .toSet()
                         .toList();
 
-                    if (selectedCategory != null && !categories.contains(selectedCategory)) {
+                    if (selectedCategory != null &&
+                        !categories.contains(selectedCategory)) {
                       selectedCategory = null;
                     }
 
                     return DropdownButtonFormField<String>(
                       value: selectedCategory,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'دسته‌بندی',
-                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       items: categories
                           .map(
@@ -282,8 +351,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             ),
                           )
                           .toList(),
-                      onChanged: (value) => setState(() => selectedCategory = value),
-                      validator: (value) => value == null ? 'دسته‌بندی را انتخاب کنید' : null,
+                      onChanged: (value) =>
+                          setState(() => selectedCategory = value),
+                      validator: (value) =>
+                          value == null ? 'دسته‌بندی را انتخاب کنید' : null,
                     );
                   },
                 ),
@@ -293,8 +364,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   label: const Text('افزودن محصول'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF4CAF50),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     textStyle: const TextStyle(fontSize: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   onPressed: _submitProduct,
                 ),

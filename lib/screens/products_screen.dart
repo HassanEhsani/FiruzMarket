@@ -1,4 +1,3 @@
-// 🛍 products_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/product_controller.dart';
@@ -22,7 +21,57 @@ class ProductsScreen extends StatefulWidget {
 class _ProductsScreenState extends State<ProductsScreen> {
   int selectedIndex = 0;
 
-  Widget buildTopNavigationBar(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Consumer<ProductController>(
+          builder: (context, controller, _) {
+            final products = controller.products;
+
+            if (products.isEmpty) {
+              return StreamBuilder<List<Product>>(
+                stream: controller.productStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('خطا در دریافت محصولات'));
+                  }
+                  return _buildFullPage(context, snapshot.data ?? []);
+                },
+              );
+            }
+
+            return _buildFullPage(context, products);
+          },
+        ),
+      ),
+      bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
+
+  Widget _buildFullPage(BuildContext context, List<Product> products) {
+    return Column(
+      children: [
+        _buildHeaderBar(context),
+        const SizedBox(height: 8),
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            itemCount: products.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            itemBuilder: (context, index) =>
+                ProductCard(product: products[index]),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeaderBar(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final currentLocale = Localizations.localeOf(context);
 
@@ -30,7 +79,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
             children: [
               const Icon(Icons.location_on, color: Colors.grey),
@@ -55,14 +104,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: TextField(
             decoration: InputDecoration(
               hintText: loc.searchHint,
               prefixIcon: const Icon(Icons.search),
               suffixIcon: const Icon(Icons.mic),
               filled: true,
-              fillColor: Colors.grey[100],
+              fillColor: Colors.grey.shade100,
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -71,26 +120,17 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         SizedBox(
           height: 72,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              _buildCategoryIcon(
-                'assets/images/clothing.png',
-                loc.categoryClothing,
-              ),
-              _buildCategoryIcon(
-                'assets/images/digital.png',
-                loc.categoryDigital,
-              ),
+              _buildCategoryIcon('assets/images/clothing.png', loc.categoryClothing),
+              _buildCategoryIcon('assets/images/digital.png', loc.categoryDigital),
               _buildCategoryIcon('assets/images/home.png', loc.categoryHome),
-              _buildCategoryIcon(
-                'assets/images/sports.png',
-                loc.categorySports,
-              ),
+              _buildCategoryIcon('assets/images/sports.png', loc.categorySports),
               _buildCategoryIcon('assets/images/all.png', loc.categoryAll),
             ],
           ),
@@ -110,11 +150,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Color(0x11000000),
+                  color: Colors.grey.withOpacity(0.1),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -124,13 +164,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Text(label, style: const TextStyle(fontSize: 12)),
+          Text(label, style: const TextStyle(fontSize: 12, color: Colors.black87)),
         ],
       ),
     );
   }
 
-  Widget buildBottomNavBar() {
+  Widget _buildBottomNavBar() {
     final loc = AppLocalizations.of(context);
 
     return BottomNavigationBar(
@@ -157,80 +197,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
         }
       },
       items: [
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.home),
-          label: loc.navHome,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.egg),
-          label: loc.navSpecial,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.local_grocery_store),
-          label: loc.navFood,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.favorite_border),
-          label: loc.navFavorites,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.shopping_cart),
-          label: loc.navCart,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.person),
-          label: loc.navProfile,
-        ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: Consumer<ProductController>(
-          builder: (context, controller, _) {
-            final products = controller.products;
-
-            if (products.isEmpty) {
-              return StreamBuilder<List<Product>>(
-                stream: controller.productStream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return const Center(child: Text('خطا در دریافت محصولات'));
-                  }
-                  return buildFullPage(context, snapshot.data ?? []);
-                },
-              );
-            }
-
-            return buildFullPage(context, products);
-          },
-        ),
-      ),
-      bottomNavigationBar: buildBottomNavBar(),
-    );
-  }
-
-  Widget buildFullPage(BuildContext context, List<Product> products) {
-    return Column(
-      children: [
-        buildTopNavigationBar(context),
-        const SizedBox(height: 8),
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.only(bottom: 12),
-            itemCount: products.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 4),
-            itemBuilder: (context, index) =>
-                ProductCard(product: products[index]),
-          ),
-        ),
+        BottomNavigationBarItem(icon: const Icon(Icons.home), label: loc.navHome),
+        BottomNavigationBarItem(icon: const Icon(Icons.egg), label: loc.navSpecial),
+        BottomNavigationBarItem(icon: const Icon(Icons.local_grocery_store), label: loc.navFood),
+        BottomNavigationBarItem(icon: const Icon(Icons.favorite_border), label: loc.navFavorites),
+        BottomNavigationBarItem(icon: const Icon(Icons.shopping_cart), label: loc.navCart),
+        BottomNavigationBarItem(icon: const Icon(Icons.person), label: loc.navProfile),
       ],
     );
   }

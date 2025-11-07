@@ -19,36 +19,42 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4CAF50),
+        backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
+        elevation: 0,
+        centerTitle: true,
         title: const Row(
           children: [
-            Icon(Icons.storefront, size: 28),
+            Icon(Icons.storefront, size: 28, color: Colors.black87),
             SizedBox(width: 8),
-            Text('FiruzMarket'),
+            Text('FiruzMarket', style: TextStyle(color: Colors.black87)),
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite_border),
+            icon: const Icon(Icons.favorite_border, color: Colors.black87),
             onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
+            icon: const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.black87,
+            ),
             onPressed: () {
               final cart = Provider.of<CartController>(context, listen: false);
-              cart.addItem(CartItem(
-                id: '1',
-                name: 'سیب قرمز',
-                price: 25000,
-                quantity: 2,
-                imageUrl: 'assets/images/apple.png',
-                discountPrice: 23000,
-                deliveryType: 'ارسال فوری',
-                storeName: 'میوه‌فروشی بهار',
-              ));
-
+              cart.addItem(
+                CartItem(
+                  id: '1',
+                  name: 'سیب قرمز',
+                  price: 25000,
+                  quantity: 2,
+                  imageUrl: 'assets/images/apple.png',
+                  discountPrice: 23000,
+                  deliveryType: 'ارسال فوری',
+                  storeName: 'میوه‌فروشی بهار',
+                ),
+              );
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => const CartScreen()),
@@ -56,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.login),
+            icon: const Icon(Icons.login, color: Colors.black87),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('ورود / عضویت هنوز فعال نشده')),
@@ -65,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(56),
+          preferredSize: const Size.fromHeight(64),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
@@ -85,8 +91,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.dashboard),
-                  label: const Text('ورود به داشبورد'),
+                  icon: const Icon(Icons.dashboard, color: Colors.black87),
+                  label: const Text(
+                    'ورود به داشبورد',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFB2DFDB),
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 14,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -107,12 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline),
+                  const Icon(Icons.info_outline, color: Colors.black87),
                   const SizedBox(width: 8),
                   const Expanded(
                     child: Text(
                       'مشتری عزیز، برای ورود و عضویت لطفاً دکمه زیر را فشار دهید.',
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
                     ),
                   ),
                   TextButton(
@@ -131,7 +151,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('products').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('products')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
                   return const Center(child: Text('خطا در دریافت محصولات'));
@@ -147,7 +169,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 return GridView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 24,
+                  ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.75,
@@ -159,35 +184,67 @@ class _HomeScreenState extends State<HomeScreen> {
                     final doc = products[index];
                     final data = doc.data() as Map<String, dynamic>;
 
-                    return Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade50,
                         borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey.shade300),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.05),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Expanded(
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(12),
+                              ),
                               child: Image.network(
-                                data['imageUrl'] ?? 'https://via.placeholder.com/150',
+                                data['imageUrl'] ??
+                                    'https://via.placeholder.com/150',
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
-                                  return const Center(child: Icon(Icons.broken_image));
+                                  return const Center(
+                                    child: Icon(Icons.broken_image),
+                                  );
                                 },
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(12.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(data['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                                Text(
+                                  data['name'],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    color: Colors.black87,
+                                  ),
+                                ),
                                 const SizedBox(height: 4),
-                                Text('قیمت: ${data['price']} تومان'),
-                                Text('دسته: ${data['category']}'),
+                                Text(
+                                  'قیمت: ${data['price']} تومان',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                Text(
+                                  'دسته: ${data['category']}',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black54,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

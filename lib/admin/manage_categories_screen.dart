@@ -28,7 +28,9 @@ class ManageCategoriesScreen extends StatelessWidget {
             onPressed: () async {
               final name = _controller.text.trim();
               if (name.isNotEmpty) {
-                await FirebaseFirestore.instance.collection('categories').add({'name': name});
+                await FirebaseFirestore.instance.collection('categories').add({
+                  'name': name,
+                });
                 Navigator.pop(context);
               }
             },
@@ -38,28 +40,47 @@ class ManageCategoriesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _confirmDelete(String docId, String name, BuildContext context) async {
+  Future<void> _confirmDelete(
+    String docId,
+    String name,
+    BuildContext context,
+  ) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('حذف دسته‌بندی'),
         content: Text('آیا مطمئن هستید که می‌خواهید "$name" را حذف کنید؟'),
         actions: [
-          TextButton(child: const Text('لغو'), onPressed: () => Navigator.pop(context, false)),
-          ElevatedButton(child: const Text('حذف'), onPressed: () => Navigator.pop(context, true)),
+          TextButton(
+            child: const Text('لغو'),
+            onPressed: () => Navigator.pop(context, false),
+          ),
+          ElevatedButton(
+            child: const Text('حذف'),
+            onPressed: () => Navigator.pop(context, true),
+          ),
         ],
       ),
     );
 
     if (confirmed == true) {
       try {
-        await FirebaseFirestore.instance.collection('categories').doc(docId).delete();
+        await FirebaseFirestore.instance
+            .collection('categories')
+            .doc(docId)
+            .delete();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: const Text('✅ دسته‌بندی حذف شد'), backgroundColor: Colors.green),
+          SnackBar(
+            content: const Text('✅ دسته‌بندی حذف شد'),
+            backgroundColor: Colors.green,
+          ),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('خطا در حذف دسته‌بندی: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('خطا در حذف دسته‌بندی: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -68,14 +89,19 @@ class ManageCategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('مدیریت دسته‌بندی‌ها'),
-        backgroundColor: const Color(0xFF4CAF50),
+        backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
         centerTitle: true,
+        elevation: 0,
+        foregroundColor: Colors.black87,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('categories').orderBy('name').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('categories')
+            .orderBy('name')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Center(child: Text('خطا در دریافت دسته‌بندی‌ها'));
@@ -87,30 +113,52 @@ class ManageCategoriesScreen extends StatelessWidget {
           final categories = snapshot.data!.docs;
 
           if (categories.isEmpty) {
-            return const Center(child: Text('هیچ دسته‌بندی ثبت نشده است'));
+            return const Center(
+              child: Text(
+                'هیچ دسته‌بندی ثبت نشده است',
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+            );
           }
 
           return ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final doc = categories[index];
               final data = doc.data() as Map<String, dynamic>;
 
-              return AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                margin: const EdgeInsets.symmetric(vertical: 8),
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade300),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: ListTile(
-                  title: Text(data['name'], style: const TextStyle(fontSize: 16)),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  title: Text(
+                    data['name'],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                  ),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
-                    onPressed: () => _confirmDelete(doc.id, data['name'], context),
+                    onPressed: () =>
+                        _confirmDelete(doc.id, data['name'], context),
                   ),
                 ),
               );
@@ -120,6 +168,7 @@ class ManageCategoriesScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: const Color(0xFF4CAF50),
+        foregroundColor: Colors.white,
         icon: const Icon(Icons.add),
         label: const Text('افزودن دسته‌بندی'),
         onPressed: () => _addCategoryDialog(context),

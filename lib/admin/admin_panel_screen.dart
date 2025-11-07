@@ -13,38 +13,90 @@ class AdminPanelScreen extends StatelessWidget {
     final appLoc = AppLocalizations.of(context)!;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(appLoc.translate('admin_title')),
+        title: Text(
+          appLoc.translate('admin_title'),
+          style: const TextStyle(color: Colors.black87),
+        ),
+        backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
+        centerTitle: true,
+        elevation: 0,
+        foregroundColor: Colors.black87,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(
+            ElevatedButton.icon(
+              icon: const Icon(Icons.add_box, color: Colors.black87),
+              label: Text(
+                appLoc.translate('add_product'),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFB2DFDB),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => const AddProductScreen(),
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AddProductScreen()),
+                );
               },
-              child: Text(appLoc.translate('add_product')),
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.edit, color: Colors.black87),
+              label: Text(
+                appLoc.translate('manage_products'),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFB2DFDB),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => const ManageProductsScreen(),
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ManageProductsScreen(),
+                  ),
+                );
               },
-              child: Text(appLoc.translate('manage_products')),
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.category, color: Colors.black87),
+              label: Text(
+                appLoc.translate('manage_categories'),
+                style: const TextStyle(fontSize: 16, color: Colors.black87),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFB2DFDB),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 0,
+              ),
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (_) => const ManageCategoriesScreen(),
-                ));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ManageCategoriesScreen(),
+                  ),
+                );
               },
-              child: Text(appLoc.translate('manage_categories')),
             ),
           ],
         ),

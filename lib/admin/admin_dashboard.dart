@@ -10,12 +10,13 @@ class AdminDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('پنل مدیریت FiruzMarket'),
         centerTitle: true,
-        backgroundColor: const Color(0xFF4CAF50),
-        elevation: 2,
+        backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
+        elevation: 0,
+        foregroundColor: Colors.black87,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -23,7 +24,10 @@ class AdminDashboard extends StatelessWidget {
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (_) => const AdminLoginScreen(selectedLocale: Locale('fa'))),
+                MaterialPageRoute(
+                  builder: (_) =>
+                      const AdminLoginScreen(selectedLocale: Locale('fa')),
+                ),
                 (route) => false,
               );
             },
@@ -31,24 +35,26 @@ class AdminDashboard extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
               'به داشبورد مدیریت خوش آمدید',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-
             _buildAdminButton(
               context,
               icon: Icons.add_box,
               label: 'افزودن محصول',
               screen: const AddProductScreen(),
             ),
-
             const SizedBox(height: 16),
             _buildAdminButton(
               context,
@@ -56,7 +62,6 @@ class AdminDashboard extends StatelessWidget {
               label: 'مدیریت محصولات',
               screen: const ManageProductsScreen(),
             ),
-
             const SizedBox(height: 16),
             _buildAdminButton(
               context,
@@ -77,12 +82,16 @@ class AdminDashboard extends StatelessWidget {
     required Widget screen,
   }) {
     return ElevatedButton.icon(
-      icon: Icon(icon),
-      label: Text(label),
+      icon: Icon(icon, color: Colors.black87),
+      label: Text(
+        label,
+        style: const TextStyle(fontSize: 16, color: Colors.black87),
+      ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF4CAF50),
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        textStyle: const TextStyle(fontSize: 16),
+        backgroundColor: const Color(0xFFB2DFDB),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 0,
       ),
       onPressed: () {
         Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
