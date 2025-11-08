@@ -1,36 +1,29 @@
 {
   "@@locale": "en",
-
   "welcome": "Welcome to FiruzMarket!",
   "@welcome": {
     "description": "Welcome message on the home screen"
   },
-
   "category_clothing": "Clothing",
   "@category_clothing": {
     "description": "Clothing category label"
   },
-
   "category_digital": "Digital",
   "@category_digital": {
     "description": "Digital category label"
   },
-
   "category_food": "Food",
   "@category_food": {
     "description": "Food category label"
   },
-
   "category_home": "Home Appliances",
   "@category_home": {
     "description": "Home appliances category label"
   },
-
   "category_beauty": "Beauty",
   "@category_beauty": {
     "description": "Beauty category label"
   },
-
   "products_related_to": "Products related to {category}",
   "@products_related_to": {
     "description": "Title for products related to a category",
@@ -38,62 +31,50 @@
       "category": {}
     }
   },
-
   "admin_title": "Admin Panel",
   "@admin_title": {
     "description": "Title of the admin panel screen"
   },
-
   "add_product": "➕ Add Product",
   "@add_product": {
     "description": "Button label to add a product"
   },
-
   "manage_products": "📝 Manage Products",
   "@manage_products": {
     "description": "Button label to manage products"
   },
-
   "manage_categories": "📂 Manage Categories",
   "@manage_categories": {
     "description": "Button label to manage categories"
   },
-
   "product_name": "Product Name",
   "@product_name": {
     "description": "Label for product name input field"
   },
-
   "price": "Price",
   "@price": {
     "description": "Label for product price input field"
   },
-
   "save": "💾 Save",
   "@save": {
     "description": "Button label to save product"
   },
-
   "product_management": "Product Management",
   "@product_management": {
     "description": "Title of the product management screen"
   },
-
   "product_management_page": "Product Management Page",
   "@product_management_page": {
     "description": "Body text for the product management screen"
   },
-
   "category_management": "Category Management",
   "@category_management": {
     "description": "Title of the category management screen"
   },
-
   "category_management_page": "Category Management Page",
   "@category_management_page": {
     "description": "Body text for the category management screen"
   },
-  
   "searchHint": "Search for product...",
   "categoryClothing": "Clothing",
   "categoryDigital": "Digital",
@@ -127,5 +108,11 @@
   "categoryBooks": "Books",
   "adminWelcome": "Welcome, please log in",
   "enterPassword": "Enter admin password",
-  "login": "Login"
+  "login": "Login",
+  "changeCurrency": "Change currency",
+  "changePassword": "Change password",
+  "changeLanguage": "Change language",
+  "orderHistory": "Order history",
+  "savedAddresses": "Saved addresses"
+
 }

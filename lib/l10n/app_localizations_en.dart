@@ -147,4 +147,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get login => 'Login';
+
+  @override
+  String get changeCurrency => 'Change currency';
+
+  @override
+  String get changePassword => 'Change password';
+
+  @override
+  String get changeLanguage => 'Change language';
+
+  @override
+  String get orderHistory => 'Order history';
+
+  @override
+  String get savedAddresses => 'Saved addresses';
 }

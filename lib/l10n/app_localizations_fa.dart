@@ -147,4 +147,19 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get login => 'ورود';
+
+  @override
+  String get changeCurrency => 'تغییر واحد پول';
+
+  @override
+  String get changePassword => 'تغییر رمز عبور';
+
+  @override
+  String get changeLanguage => 'تغییر زبان';
+
+  @override
+  String get orderHistory => 'تاریخچه سفارش‌ها';
+
+  @override
+  String get savedAddresses => 'آدرس‌های ذخیره‌شده';
 }

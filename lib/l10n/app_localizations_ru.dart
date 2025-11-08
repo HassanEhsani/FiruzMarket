@@ -147,4 +147,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get login => 'Войти';
+
+  @override
+  String get changeCurrency => 'Сменить валюту';
+
+  @override
+  String get changePassword => 'Сменить пароль';
+
+  @override
+  String get changeLanguage => 'Сменить язык';
+
+  @override
+  String get orderHistory => 'История заказов';
+
+  @override
+  String get savedAddresses => 'Сохранённые адреса';
 }

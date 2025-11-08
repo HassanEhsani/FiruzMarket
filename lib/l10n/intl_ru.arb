@@ -127,6 +127,11 @@
   "categoryBooks": "Книги",
   "adminWelcome": "Добро пожаловать, пожалуйста, войдите",
   "enterPassword": "Введите пароль администратора",
-  "login": "Войти"
+  "login": "Войти",
+  "changeCurrency": "Сменить валюту",
+  "changePassword": "Сменить пароль",
+  "changeLanguage": "Сменить язык",
+  "orderHistory": "История заказов",
+  "savedAddresses": "Сохранённые адреса"
 
 }

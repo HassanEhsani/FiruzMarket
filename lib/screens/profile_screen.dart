@@ -21,6 +21,7 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // 👤 تصویر و اطلاعات کاربر
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -38,38 +39,40 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              'حسن رضایی',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
+            Text('Firuz',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 4),
-            Text(
-              'hassan@example.com',
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.grey,
-              ),
-            ),
+            Text('Firuz@example.com',
+                style: const TextStyle(fontSize: 14, color: Colors.grey)),
+            const SizedBox(height: 4),
+            Text('📱 07123456789',
+                style: const TextStyle(fontSize: 14, color: Colors.grey)),
+            Text('🏠 Sanit pitersburg, Russia',
+                style: const TextStyle(fontSize: 14, color: Colors.grey)),
             const SizedBox(height: 32),
-            _buildProfileAction(
-              icon: Icons.edit,
-              label: loc.editProfile,
-              onTap: () {
-                // TODO: ویرایش پروفایل
-              },
-            ),
+
+            // ⚙️ تنظیمات حساب
+            _buildProfileAction(icon: Icons.edit, label: loc.editProfile, onTap: () {}),
             const SizedBox(height: 12),
-            _buildProfileAction(
-              icon: Icons.logout,
-              label: loc.logout,
-              onTap: () {
-                // TODO: خروج از حساب
-              },
-            ),
+            _buildProfileAction(icon: Icons.lock, label: loc.changePassword, onTap: () {}),
+            const SizedBox(height: 12),
+            _buildProfileAction(icon: Icons.language, label: loc.changeLanguage, onTap: () {}),
+            const SizedBox(height: 12),
+            _buildProfileAction(icon: Icons.attach_money, label: loc.changeCurrency, onTap: () {}),
+            const SizedBox(height: 12),
+
+            // 📦 فعالیت‌های کاربر
+            const Divider(height: 32),
+            _buildProfileAction(icon: Icons.favorite, label: loc.navFavorites, onTap: () {}),
+            const SizedBox(height: 12),
+            _buildProfileAction(icon: Icons.shopping_bag, label: loc.orderHistory, onTap: () {}),
+            const SizedBox(height: 12),
+            _buildProfileAction(icon: Icons.location_on, label: loc.savedAddresses, onTap: () {}),
+            const SizedBox(height: 12),
+
+            // 🚪 خروج
+            const Divider(height: 32),
+            _buildProfileAction(icon: Icons.logout, label: loc.logout, onTap: () {}),
           ],
         ),
       ),
@@ -101,14 +104,8 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.deepOrange),
             const SizedBox(width: 12),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 15,
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Text(label,
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
             const Spacer(),
             const Icon(Icons.chevron_right, color: Colors.grey),
           ],

@@ -127,6 +127,10 @@
   "categoryBooks": "کتاب",
   "adminWelcome": "خوش آمدید، لطفاً وارد شوید",
   "enterPassword": "رمز عبور را وارد کنید",
-  "login": "ورود"
-
+  "login": "ورود",
+  "changeCurrency": "تغییر واحد پول",
+  "changePassword": "تغییر رمز عبور",
+  "changeLanguage": "تغییر زبان",
+  "orderHistory": "تاریخچه سفارش‌ها",
+  "savedAddresses": "آدرس‌های ذخیره‌شده"
 }
