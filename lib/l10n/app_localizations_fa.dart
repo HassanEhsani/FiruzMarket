@@ -314,4 +314,18 @@ class AppLocalizationsFa extends AppLocalizations {
   String addressSelectedMessage(Object address) {
     return 'آدرس \"$address\" انتخاب شد';
   }
+
+  @override
+  String get favoritesTitle => 'علاقه‌مندی‌ها';
+
+  @override
+  String get noFavoritesMessage => 'محصولی در علاقه‌مندی‌ها نیست';
+
+  @override
+  String get addToCartButton => 'افزودن به سبد خرید';
+
+  @override
+  String productAddedToCartMessage(Object productName) {
+    return '\"$productName\" به سبد خرید اضافه شد';
+  }
 }

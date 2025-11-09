@@ -693,6 +693,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Address \"{address}\" selected'**
   String addressSelectedMessage(Object address);
+
+  /// No description provided for @favoritesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favoritesTitle;
+
+  /// No description provided for @noFavoritesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No products in your favorites'**
+  String get noFavoritesMessage;
+
+  /// No description provided for @addToCartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Cart'**
+  String get addToCartButton;
+
+  /// Message shown when a product is added to the cart
+  ///
+  /// In en, this message translates to:
+  /// **'\"{productName}\" has been added to your cart'**
+  String productAddedToCartMessage(Object productName);
 }
 
 class _AppLocalizationsDelegate

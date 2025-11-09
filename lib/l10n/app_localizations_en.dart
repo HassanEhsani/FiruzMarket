@@ -314,4 +314,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String addressSelectedMessage(Object address) {
     return 'Address \"$address\" selected';
   }
+
+  @override
+  String get favoritesTitle => 'Favorites';
+
+  @override
+  String get noFavoritesMessage => 'No products in your favorites';
+
+  @override
+  String get addToCartButton => 'Add to Cart';
+
+  @override
+  String productAddedToCartMessage(Object productName) {
+    return '\"$productName\" has been added to your cart';
+  }
 }

@@ -215,5 +215,15 @@
     "placeholders": {
       "address": {}
     }
+  },
+  "favoritesTitle": "Favorites",
+  "noFavoritesMessage": "No products in your favorites",
+  "addToCartButton": "Add to Cart",
+  "productAddedToCartMessage": "\"{productName}\" has been added to your cart",
+  "@productAddedToCartMessage": {
+    "description": "Message shown when a product is added to the cart",
+    "placeholders": {
+      "productName": {}
+    }
   }
 }

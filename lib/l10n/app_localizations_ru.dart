@@ -314,4 +314,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String addressSelectedMessage(Object address) {
     return 'Адрес \"$address\" выбран';
   }
+
+  @override
+  String get favoritesTitle => 'Избранное';
+
+  @override
+  String get noFavoritesMessage => 'В избранном нет товаров';
+
+  @override
+  String get addToCartButton => 'Добавить в корзину';
+
+  @override
+  String productAddedToCartMessage(Object productName) {
+    return '\"$productName\" добавлен в корзину';
+  }
 }

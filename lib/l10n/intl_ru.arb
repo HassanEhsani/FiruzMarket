@@ -215,5 +215,15 @@
     "placeholders": {
       "address": {}
     }
+  },
+  "favoritesTitle": "Избранное",
+  "noFavoritesMessage": "В избранном нет товаров",
+  "addToCartButton": "Добавить в корзину",
+  "productAddedToCartMessage": "\"{productName}\" добавлен в корзину",
+  "@productAddedToCartMessage": {
+    "description": "Сообщение при добавлении товара в корзину",
+    "placeholders": {
+      "productName": {}
+    }
   }
 }

@@ -224,6 +224,16 @@
   "placeholders": {
     "address": {}
   }
+},
+"favoritesTitle": "علاقه‌مندی‌ها",
+"noFavoritesMessage": "محصولی در علاقه‌مندی‌ها نیست",
+"addToCartButton": "افزودن به سبد خرید",
+"productAddedToCartMessage": "\"{productName}\" به سبد خرید اضافه شد",
+"@productAddedToCartMessage": {
+  "description": "پیام افزودن محصول به سبد خرید",
+  "placeholders": {
+    "productName": {}
+  }
 }
 
 

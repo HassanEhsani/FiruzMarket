@@ -6,6 +6,7 @@ import 'language_settings_screen.dart';
 import 'currency_settings_screen.dart';
 import 'order_history_screen.dart';
 import 'saved_addresses_screen.dart';
+import 'favorites_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -45,16 +46,24 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text('Firuz',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(
+              'Firuz',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 4),
-            Text('Firuz@example.com',
-                style: const TextStyle(fontSize: 14, color: Colors.grey)),
+            Text(
+              'Firuz@example.com',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
             const SizedBox(height: 4),
-            Text('📱 07123456789',
-                style: const TextStyle(fontSize: 14, color: Colors.grey)),
-            Text('🏠 Sanit pitersburg, Russia',
-                style: const TextStyle(fontSize: 14, color: Colors.grey)),
+            Text(
+              '📱 07123456789',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+            Text(
+              '🏠 Sanit pitersburg, Russia',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
             const SizedBox(height: 32),
 
             // ⚙️ تنظیمات حساب
@@ -81,7 +90,9 @@ class ProfileScreen extends StatelessWidget {
               label: loc.changeLanguage,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const LanguageSettingsScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const LanguageSettingsScreen(),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -90,7 +101,9 @@ class ProfileScreen extends StatelessWidget {
               label: loc.changeCurrency,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const CurrencySettingsScreen()),
+                MaterialPageRoute(
+                  builder: (_) => const CurrencySettingsScreen(),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -102,6 +115,12 @@ class ProfileScreen extends StatelessWidget {
               label: loc.navFavorites,
               onTap: () {
                 // TODO: اتصال به صفحه علاقه‌مندی‌ها
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FavoritesScreen(),
+                  ),
+                );
               },
             ),
             const SizedBox(height: 12),
@@ -164,8 +183,10 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.deepOrange),
             const SizedBox(width: 12),
-            Text(label,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+            ),
             const Spacer(),
             const Icon(Icons.chevron_right, color: Colors.grey),
           ],
