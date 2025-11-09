@@ -307,7 +307,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:
-  /// **'Profile'**
+  /// **'My Profile'**
   String get profileTitle;
 
   /// No description provided for @cartTitle.
@@ -325,7 +325,7 @@ abstract class AppLocalizations {
   /// No description provided for @logout.
   ///
   /// In en, this message translates to:
-  /// **'Log Out'**
+  /// **'Logout'**
   String get logout;
 
   /// No description provided for @emptyCart.
@@ -379,32 +379,320 @@ abstract class AppLocalizations {
   /// No description provided for @changeCurrency.
   ///
   /// In en, this message translates to:
-  /// **'Change currency'**
+  /// **'Change Currency'**
   String get changeCurrency;
 
   /// No description provided for @changePassword.
   ///
   /// In en, this message translates to:
-  /// **'Change password'**
+  /// **'Change Password'**
   String get changePassword;
 
   /// No description provided for @changeLanguage.
   ///
   /// In en, this message translates to:
-  /// **'Change language'**
+  /// **'Change Language'**
   String get changeLanguage;
 
   /// No description provided for @orderHistory.
   ///
   /// In en, this message translates to:
-  /// **'Order history'**
+  /// **'Order History'**
   String get orderHistory;
 
   /// No description provided for @savedAddresses.
   ///
   /// In en, this message translates to:
-  /// **'Saved addresses'**
+  /// **'Saved Addresses'**
   String get savedAddresses;
+
+  /// No description provided for @nameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get nameLabel;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailLabel;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Number'**
+  String get phoneLabel;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePasswordTitle;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @repeatNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat New Password'**
+  String get repeatNewPassword;
+
+  /// No description provided for @changePasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePasswordButton;
+
+  /// No description provided for @languageSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language Settings'**
+  String get languageSettingsTitle;
+
+  /// No description provided for @selectLanguagePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred language'**
+  String get selectLanguagePrompt;
+
+  /// No description provided for @languageFarsi.
+  ///
+  /// In en, this message translates to:
+  /// **'Farsi'**
+  String get languageFarsi;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageRussian.
+  ///
+  /// In en, this message translates to:
+  /// **'Russian'**
+  String get languageRussian;
+
+  /// No description provided for @saveLanguageButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Language'**
+  String get saveLanguageButton;
+
+  /// No description provided for @currencySettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency Settings'**
+  String get currencySettingsTitle;
+
+  /// No description provided for @selectCurrencyPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferred currency'**
+  String get selectCurrencyPrompt;
+
+  /// No description provided for @currencyIRR.
+  ///
+  /// In en, this message translates to:
+  /// **'Iranian Rial'**
+  String get currencyIRR;
+
+  /// No description provided for @currencyUSD.
+  ///
+  /// In en, this message translates to:
+  /// **'\$ US Dollar'**
+  String get currencyUSD;
+
+  /// No description provided for @currencyEUR.
+  ///
+  /// In en, this message translates to:
+  /// **'€ Euro'**
+  String get currencyEUR;
+
+  /// No description provided for @currencyRUB.
+  ///
+  /// In en, this message translates to:
+  /// **'₽ Russian Ruble'**
+  String get currencyRUB;
+
+  /// No description provided for @saveCurrencyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Currency'**
+  String get saveCurrencyButton;
+
+  /// No description provided for @orderHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Order History'**
+  String get orderHistoryTitle;
+
+  /// No description provided for @orderAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get orderAmount;
+
+  /// No description provided for @orderStatusDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get orderStatusDelivered;
+
+  /// No description provided for @orderStatusShipping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shipping'**
+  String get orderStatusShipping;
+
+  /// No description provided for @orderStatusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get orderStatusCancelled;
+
+  /// No description provided for @orderNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Order Number'**
+  String get orderNumber;
+
+  /// No description provided for @orderDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get orderDate;
+
+  /// No description provided for @passwordChangedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChangedSuccess;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @fieldCannotBeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This field cannot be empty'**
+  String get fieldCannotBeEmpty;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @saveChangesSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Information saved successfully'**
+  String get saveChangesSuccess;
+
+  /// No description provided for @languageSelectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language \"{language}\" selected'**
+  String languageSelectedMessage(Object language);
+
+  /// No description provided for @currencyAFN.
+  ///
+  /// In en, this message translates to:
+  /// **' Afghan Afghani'**
+  String get currencyAFN;
+
+  /// No description provided for @currencyTJS.
+  ///
+  /// In en, this message translates to:
+  /// **'Ѕ Tajikistani Somoni'**
+  String get currencyTJS;
+
+  /// Message shown when a currency is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Currency \"{currency}\" selected'**
+  String currencySelectedMessage(Object currency);
+
+  /// No description provided for @noOrdersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t placed any orders yet'**
+  String get noOrdersMessage;
+
+  /// No description provided for @orderDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get orderDateLabel;
+
+  /// Message shown when an order is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Order \"{orderId}\" selected'**
+  String orderSelectedMessage(Object orderId);
+
+  /// No description provided for @savedAddressesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved Addresses'**
+  String get savedAddressesTitle;
+
+  /// No description provided for @noAddressesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t saved any addresses yet'**
+  String get noAddressesMessage;
+
+  /// No description provided for @addAddressButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Address'**
+  String get addAddressButton;
+
+  /// No description provided for @addAddressMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add new address'**
+  String get addAddressMessage;
+
+  /// No description provided for @deleteAddressButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Address'**
+  String get deleteAddressButton;
+
+  /// No description provided for @addressDeletedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Address deleted'**
+  String get addressDeletedMessage;
+
+  /// Message shown when an address is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Address \"{address}\" selected'**
+  String addressSelectedMessage(Object address);
 }
 
 class _AppLocalizationsDelegate

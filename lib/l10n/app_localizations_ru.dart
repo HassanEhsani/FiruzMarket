@@ -113,7 +113,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get productShoes => 'Обувь';
 
   @override
-  String get profileTitle => 'Профиль';
+  String get profileTitle => 'Мой профиль';
 
   @override
   String get cartTitle => 'Корзина';
@@ -122,7 +122,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get editProfile => 'Редактировать профиль';
 
   @override
-  String get logout => 'Выйти';
+  String get logout => 'Выход';
 
   @override
   String get emptyCart => 'Корзина пуста';
@@ -162,4 +162,156 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get savedAddresses => 'Сохранённые адреса';
+
+  @override
+  String get nameLabel => 'Полное имя';
+
+  @override
+  String get emailLabel => 'Эл. почта';
+
+  @override
+  String get phoneLabel => 'Номер телефона';
+
+  @override
+  String get saveChanges => 'Сохранить изменения';
+
+  @override
+  String get changePasswordTitle => 'Сменить пароль';
+
+  @override
+  String get currentPassword => 'Текущий пароль';
+
+  @override
+  String get newPassword => 'Новый пароль';
+
+  @override
+  String get repeatNewPassword => 'Повторите новый пароль';
+
+  @override
+  String get changePasswordButton => 'Сменить пароль';
+
+  @override
+  String get languageSettingsTitle => 'Настройки языка';
+
+  @override
+  String get selectLanguagePrompt => 'Выберите предпочитаемый язык';
+
+  @override
+  String get languageFarsi => 'Фарси';
+
+  @override
+  String get languageEnglish => 'Английский';
+
+  @override
+  String get languageRussian => 'Русский';
+
+  @override
+  String get saveLanguageButton => 'Сохранить язык';
+
+  @override
+  String get currencySettingsTitle => 'Настройки валюты';
+
+  @override
+  String get selectCurrencyPrompt => 'Выберите предпочитаемую валюту';
+
+  @override
+  String get currencyIRR => 'Иранский риал';
+
+  @override
+  String get currencyUSD => '\$ Доллар США';
+
+  @override
+  String get currencyEUR => '€ Евро';
+
+  @override
+  String get currencyRUB => '₽ Российский рубль';
+
+  @override
+  String get saveCurrencyButton => 'Сохранить валюту';
+
+  @override
+  String get orderHistoryTitle => 'История заказов';
+
+  @override
+  String get orderAmount => 'Сумма';
+
+  @override
+  String get orderStatusDelivered => 'Доставлен';
+
+  @override
+  String get orderStatusShipping => 'В пути';
+
+  @override
+  String get orderStatusCancelled => 'Отменён';
+
+  @override
+  String get orderNumber => 'Номер заказа';
+
+  @override
+  String get orderDate => 'Дата';
+
+  @override
+  String get passwordChangedSuccess => 'Пароль успешно изменён';
+
+  @override
+  String get passwordsDoNotMatch => 'Пароли не совпадают';
+
+  @override
+  String get fieldCannotBeEmpty => 'Это поле не может быть пустым';
+
+  @override
+  String get passwordTooShort => 'Пароль должен содержать не менее 6 символов';
+
+  @override
+  String get saveChangesSuccess => 'Информация успешно сохранена';
+
+  @override
+  String languageSelectedMessage(Object language) {
+    return 'Язык \"$language\" выбран';
+  }
+
+  @override
+  String get currencyAFN => ' Афганский афгани';
+
+  @override
+  String get currencyTJS => 'Ѕ Таджикский сомони';
+
+  @override
+  String currencySelectedMessage(Object currency) {
+    return 'Валюта \"$currency\" выбрана';
+  }
+
+  @override
+  String get noOrdersMessage => 'Вы ещё не сделали ни одного заказа';
+
+  @override
+  String get orderDateLabel => 'Дата';
+
+  @override
+  String orderSelectedMessage(Object orderId) {
+    return 'Заказ \"$orderId\" выбран';
+  }
+
+  @override
+  String get savedAddressesTitle => 'Сохранённые адреса';
+
+  @override
+  String get noAddressesMessage => 'Вы ещё не сохранили ни одного адреса';
+
+  @override
+  String get addAddressButton => 'Добавить адрес';
+
+  @override
+  String get addAddressMessage => 'Добавить новый адрес';
+
+  @override
+  String get deleteAddressButton => 'Удалить адрес';
+
+  @override
+  String get addressDeletedMessage => 'Адрес удалён';
+
+  @override
+  String addressSelectedMessage(Object address) {
+    return 'Адрес \"$address\" выбран';
+  }
 }

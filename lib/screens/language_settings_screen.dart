@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class LanguageSettingsScreen extends StatefulWidget {
   const LanguageSettingsScreen({super.key});
@@ -10,17 +11,19 @@ class LanguageSettingsScreen extends StatefulWidget {
 class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
   String _selectedLanguage = 'fa';
 
-  final Map<String, String> _languages = {
-    'fa': 'فارسی',
-    'en': 'English',
-    'ru': 'Русский',
-  };
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
+    final Map<String, String> _languages = {
+      'fa': loc.languageFarsi,
+      'en': loc.languageEnglish,
+      'ru': loc.languageRussian,
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('تنظیمات زبان'),
+        title: Text(loc.languageSettingsTitle),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0.5,
@@ -30,9 +33,9 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'زبان مورد نظر را انتخاب کنید:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            Text(
+              loc.selectLanguagePrompt,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
             ..._languages.entries.map((entry) {
@@ -54,11 +57,11 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
                 onPressed: () {
                   // TODO: ذخیره زبان انتخاب‌شده
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('زبان "${_languages[_selectedLanguage]}" انتخاب شد')),
+                    SnackBar(content: Text('${loc.languageSelectedMessage(_languages[_selectedLanguage] ?? '')}')),
                   );
                 },
                 icon: const Icon(Icons.language),
-                label: const Text('ذخیره زبان'),
+                label: Text(loc.saveLanguageButton),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepOrange,
                   padding: const EdgeInsets.symmetric(vertical: 14),

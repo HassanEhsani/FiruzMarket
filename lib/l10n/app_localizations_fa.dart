@@ -98,7 +98,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get navFood => 'خوراکی';
 
   @override
-  String get navFavorites => 'علاقه‌مندی';
+  String get navFavorites => 'علاقه‌مندی‌ها';
 
   @override
   String get navCart => 'سبد خرید';
@@ -113,16 +113,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get productShoes => 'کفش';
 
   @override
-  String get profileTitle => 'پروفایل';
+  String get profileTitle => 'پروفایل من';
 
   @override
   String get cartTitle => 'سبد خرید';
 
   @override
-  String get editProfile => 'ویرایش اطلاعات';
+  String get editProfile => 'ویرایش پروفایل';
 
   @override
-  String get logout => 'خروج از حساب';
+  String get logout => 'خروج';
 
   @override
   String get emptyCart => 'سبد خرید خالی است';
@@ -162,4 +162,156 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get savedAddresses => 'آدرس‌های ذخیره‌شده';
+
+  @override
+  String get nameLabel => 'نام کامل';
+
+  @override
+  String get emailLabel => 'ایمیل';
+
+  @override
+  String get phoneLabel => 'شماره موبایل';
+
+  @override
+  String get saveChanges => 'ذخیره تغییرات';
+
+  @override
+  String get changePasswordTitle => 'تغییر رمز عبور';
+
+  @override
+  String get currentPassword => 'رمز فعلی';
+
+  @override
+  String get newPassword => 'رمز جدید';
+
+  @override
+  String get repeatNewPassword => 'تکرار رمز جدید';
+
+  @override
+  String get changePasswordButton => 'تغییر رمز';
+
+  @override
+  String get languageSettingsTitle => 'تنظیمات زبان';
+
+  @override
+  String get selectLanguagePrompt => 'زبان مورد نظر را انتخاب کنید';
+
+  @override
+  String get languageFarsi => 'فارسی';
+
+  @override
+  String get languageEnglish => 'انگلیسی';
+
+  @override
+  String get languageRussian => 'روسی';
+
+  @override
+  String get saveLanguageButton => 'ذخیره زبان';
+
+  @override
+  String get currencySettingsTitle => 'تنظیمات واحد پول';
+
+  @override
+  String get selectCurrencyPrompt => 'واحد پول مورد نظر را انتخاب کنید';
+
+  @override
+  String get currencyIRR => 'ریال ایران';
+
+  @override
+  String get currencyUSD => '\$ دلار آمریکا';
+
+  @override
+  String get currencyEUR => '€ یورو';
+
+  @override
+  String get currencyRUB => '₽ روبل روسیه';
+
+  @override
+  String get saveCurrencyButton => 'ذخیره واحد پول';
+
+  @override
+  String get orderHistoryTitle => 'تاریخچه سفارش‌ها';
+
+  @override
+  String get orderAmount => 'مبلغ';
+
+  @override
+  String get orderStatusDelivered => 'تحویل شده';
+
+  @override
+  String get orderStatusShipping => 'در حال ارسال';
+
+  @override
+  String get orderStatusCancelled => 'لغو شده';
+
+  @override
+  String get orderNumber => 'شماره سفارش';
+
+  @override
+  String get orderDate => 'تاریخ';
+
+  @override
+  String get passwordChangedSuccess => 'رمز عبور با موفقیت تغییر کرد';
+
+  @override
+  String get passwordsDoNotMatch => 'رمزها با هم مطابقت ندارند';
+
+  @override
+  String get fieldCannotBeEmpty => 'این فیلد نمی‌تواند خالی باشد';
+
+  @override
+  String get passwordTooShort => 'رمز باید حداقل ۶ کاراکتر باشد';
+
+  @override
+  String get saveChangesSuccess => 'اطلاعات با موفقیت ذخیره شد';
+
+  @override
+  String languageSelectedMessage(Object language) {
+    return 'زبان \"$language\" انتخاب شد';
+  }
+
+  @override
+  String get currencyAFN => ' افغانی افغانستان';
+
+  @override
+  String get currencyTJS => 'Ѕ سامانی تاجیکستان';
+
+  @override
+  String currencySelectedMessage(Object currency) {
+    return 'واحد پول \"$currency\" انتخاب شد';
+  }
+
+  @override
+  String get noOrdersMessage => 'شما هنوز سفارشی ثبت نکرده‌اید';
+
+  @override
+  String get orderDateLabel => 'تاریخ';
+
+  @override
+  String orderSelectedMessage(Object orderId) {
+    return 'سفارش \"$orderId\" انتخاب شد';
+  }
+
+  @override
+  String get savedAddressesTitle => 'آدرس‌های ذخیره‌شده';
+
+  @override
+  String get noAddressesMessage => 'شما هنوز آدرسی ذخیره نکرده‌اید';
+
+  @override
+  String get addAddressButton => 'افزودن آدرس';
+
+  @override
+  String get addAddressMessage => 'افزودن آدرس جدید';
+
+  @override
+  String get deleteAddressButton => 'حذف آدرس';
+
+  @override
+  String get addressDeletedMessage => 'آدرس حذف شد';
+
+  @override
+  String addressSelectedMessage(Object address) {
+    return 'آدرس \"$address\" انتخاب شد';
+  }
 }

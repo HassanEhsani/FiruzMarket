@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -15,9 +16,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('تغییر رمز عبور'),
+        title: Text(loc.changePasswordTitle),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0.5,
@@ -30,20 +33,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             children: [
               _buildPasswordField(
                 controller: _currentPasswordController,
-                label: 'رمز فعلی',
+                label: loc.currentPassword,
               ),
               const SizedBox(height: 16),
               _buildPasswordField(
                 controller: _newPasswordController,
-                label: 'رمز جدید',
+                label: loc.newPassword,
               ),
               const SizedBox(height: 16),
               _buildPasswordField(
                 controller: _confirmPasswordController,
-                label: 'تکرار رمز جدید',
+                label: loc.repeatNewPassword,
                 validator: (value) {
                   if (value != _newPasswordController.text) {
-                    return 'رمزها با هم مطابقت ندارند';
+                    return loc.passwordsDoNotMatch;
                   }
                   return null;
                 },
@@ -56,12 +59,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     if (_formKey.currentState!.validate()) {
                       // TODO: ارسال رمز جدید به سرور
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('رمز عبور با موفقیت تغییر کرد')),
+                        SnackBar(
+                          content: Text(loc.passwordChangedSuccess),
+                        ),
                       );
                     }
                   },
                   icon: const Icon(Icons.lock_reset),
-                  label: const Text('تغییر رمز'),
+                  label: Text(loc.changePasswordButton),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepOrange,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -80,18 +85,21 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     required String label,
     String? Function(String?)? validator,
   }) {
+    final loc = AppLocalizations.of(context);
+
     return TextFormField(
       controller: controller,
       obscureText: true,
-      validator: validator ?? (value) {
-        if (value == null || value.isEmpty) {
-          return 'این فیلد نمی‌تواند خالی باشد';
-        }
-        if (value.length < 6) {
-          return 'رمز باید حداقل ۶ کاراکتر باشد';
-        }
-        return null;
-      },
+      validator: validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return loc.fieldCannotBeEmpty;
+            }
+            if (value.length < 6) {
+              return loc.passwordTooShort;
+            }
+            return null;
+          },
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: const Icon(Icons.lock),

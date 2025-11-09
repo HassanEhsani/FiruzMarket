@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class CurrencySettingsScreen extends StatefulWidget {
   const CurrencySettingsScreen({super.key});
@@ -8,20 +9,23 @@ class CurrencySettingsScreen extends StatefulWidget {
 }
 
 class _CurrencySettingsScreenState extends State<CurrencySettingsScreen> {
-  String _selectedCurrency = 'IRR';
-
-  final Map<String, String> _currencies = {
-    'IRR': '﷼ ریال ایران',
-    'USD': '\$ دلار آمریکا',
-    'EUR': '€ یورو',
-    'RUB': '₽ روبل روسیه',
-  };
+  String _selectedCurrency = 'AFN';
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
+    final Map<String, String> _currencies = {
+      'AFN': loc.currencyAFN, // افغانی افغانستان
+      'TJS': loc.currencyTJS, // سامانی تاجیکستان
+      'USD': loc.currencyUSD,
+      'EUR': loc.currencyEUR,
+      'RUB': loc.currencyRUB,
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('تنظیمات واحد پول'),
+        title: Text(loc.currencySettingsTitle),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0.5,
@@ -31,9 +35,9 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'واحد پول مورد نظر را انتخاب کنید:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            Text(
+              loc.selectCurrencyPrompt,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16),
             ..._currencies.entries.map((entry) {
@@ -55,11 +59,15 @@ class _CurrencySettingsScreenState extends State<CurrencySettingsScreen> {
                 onPressed: () {
                   // TODO: ذخیره واحد پول انتخاب‌شده
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('واحد "${_currencies[_selectedCurrency]}" انتخاب شد')),
+                    SnackBar(
+                      content: Text(
+                        loc.currencySelectedMessage(_currencies[_selectedCurrency] ?? ''),
+                      ),
+                    ),
                   );
                 },
                 icon: const Icon(Icons.attach_money),
-                label: const Text('ذخیره واحد پول'),
+                label: Text(loc.saveCurrencyButton),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepOrange,
                   padding: const EdgeInsets.symmetric(vertical: 14),

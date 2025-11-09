@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -15,9 +16,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ویرایش پروفایل'),
+        title: Text(loc.editProfile),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black87,
         elevation: 0.5,
@@ -30,20 +33,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               _buildTextField(
                 controller: _nameController,
-                label: 'نام کامل',
+                label: loc.nameLabel,
                 icon: Icons.person,
               ),
               const SizedBox(height: 16),
               _buildTextField(
                 controller: _emailController,
-                label: 'ایمیل',
+                label: loc.emailLabel,
                 icon: Icons.email,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               _buildTextField(
                 controller: _phoneController,
-                label: 'شماره موبایل',
+                label: loc.phoneLabel,
                 icon: Icons.phone,
                 keyboardType: TextInputType.phone,
               ),
@@ -55,12 +58,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     if (_formKey.currentState!.validate()) {
                       // TODO: ذخیره اطلاعات جدید
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('اطلاعات با موفقیت ذخیره شد')),
+                        SnackBar(content: Text(loc.saveChangesSuccess)),
                       );
                     }
                   },
                   icon: const Icon(Icons.save),
-                  label: const Text('ذخیره تغییرات'),
+                  label: Text(loc.saveChanges),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepOrange,
                     padding: const EdgeInsets.symmetric(vertical: 14),
@@ -80,10 +83,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
   }) {
+    final loc = AppLocalizations.of(context);
+
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
-      validator: (value) => value == null || value.isEmpty ? 'این فیلد نمی‌تواند خالی باشد' : null,
+      validator: (value) =>
+          value == null || value.isEmpty ? loc.fieldCannotBeEmpty : null,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon),

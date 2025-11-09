@@ -1,36 +1,29 @@
 {
   "@@locale": "fa",
-
   "welcome": "به فیروزمارکت خوش آمدید!",
   "@welcome": {
     "description": "پیام خوش‌آمدگویی در صفحه اصلی"
   },
-
   "category_clothing": "پوشاک",
   "@category_clothing": {
     "description": "برچسب دسته‌بندی پوشاک"
   },
-
   "category_digital": "دیجیتال",
   "@category_digital": {
     "description": "برچسب دسته‌بندی دیجیتال"
   },
-
   "category_food": "خوراکی",
   "@category_food": {
     "description": "برچسب دسته‌بندی خوراکی"
   },
-
   "category_home": "لوازم خانگی",
   "@category_home": {
     "description": "برچسب دسته‌بندی لوازم خانگی"
   },
-
   "category_beauty": "زیبایی",
   "@category_beauty": {
     "description": "برچسب دسته‌بندی زیبایی"
   },
-
   "products_related_to": "محصولات مرتبط با {category}",
   "@products_related_to": {
     "description": "عنوان محصولات مرتبط با یک دسته‌بندی",
@@ -38,62 +31,50 @@
       "category": {}
     }
   },
-
   "admin_title": "پنل مدیریت",
   "@admin_title": {
     "description": "عنوان صفحه پنل مدیریت"
   },
-
   "add_product": "➕ افزودن محصول",
   "@add_product": {
     "description": "دکمه افزودن محصول"
   },
-
   "manage_products": "📝 مدیریت محصولات",
   "@manage_products": {
     "description": "دکمه مدیریت محصولات"
   },
-
   "manage_categories": "📂 مدیریت دسته‌ها",
   "@manage_categories": {
     "description": "دکمه مدیریت دسته‌ها"
   },
-
   "product_name": "نام محصول",
   "@product_name": {
     "description": "برچسب فیلد نام محصول"
   },
-
   "price": "قیمت",
   "@price": {
     "description": "برچسب فیلد قیمت محصول"
   },
-
   "save": "💾 ذخیره",
   "@save": {
     "description": "دکمه ذخیره محصول"
   },
-
   "product_management": "مدیریت محصولات",
   "@product_management": {
     "description": "عنوان صفحه مدیریت محصولات"
   },
-
   "product_management_page": "صفحه مدیریت محصولات",
   "@product_management_page": {
     "description": "متن بدنه صفحه مدیریت محصولات"
   },
-
   "category_management": "مدیریت دسته‌ها",
   "@category_management": {
     "description": "عنوان صفحه مدیریت دسته‌ها"
   },
-
   "category_management_page": "صفحه مدیریت دسته‌ها",
   "@category_management_page": {
     "description": "متن بدنه صفحه مدیریت دسته‌ها"
   },
-
   "searchHint": "جستجوی محصول...",
   "categoryClothing": "پوشاک",
   "categoryDigital": "دیجیتال",
@@ -128,9 +109,123 @@
   "adminWelcome": "خوش آمدید، لطفاً وارد شوید",
   "enterPassword": "رمز عبور را وارد کنید",
   "login": "ورود",
-  "changeCurrency": "تغییر واحد پول",
+  "profileTitle": "پروفایل من",
+  "editProfile": "ویرایش پروفایل",
   "changePassword": "تغییر رمز عبور",
   "changeLanguage": "تغییر زبان",
+  "changeCurrency": "تغییر واحد پول",
+  "navFavorites": "علاقه‌مندی‌ها",
   "orderHistory": "تاریخچه سفارش‌ها",
-  "savedAddresses": "آدرس‌های ذخیره‌شده"
+  "savedAddresses": "آدرس‌های ذخیره‌شده",
+  "logout": "خروج",
+  "nameLabel": "نام",
+  "emailLabel": "ایمیل",
+  "phoneLabel": "شماره موبایل",
+  "saveChanges": "ذخیره تغییرات",
+  "currentPassword": "رمز فعلی",
+  "newPassword": "رمز جدید",
+  "repeatNewPassword": "تکرار رمز جدید",
+  "changePasswordButton": "تغییر رمز",
+  "languageSettingsTitle": "تنظیمات زبان",
+  "selectLanguagePrompt": "زبان مورد نظر را انتخاب کنید",
+  "languageFarsi": "فارسی",
+  "languageEnglish": "انگلیسی",
+  "languageRussian": "روسی",
+  "saveLanguageButton": "ذخیره زبان",
+  "currencySettingsTitle": "تنظیمات واحد پول",
+  "selectCurrencyPrompt": "واحد پول مورد نظر را انتخاب کنید",
+  "currencyIRR": "ریال ایران",
+  "currencyUSD": "دلار آمریکا",
+  "currencyEUR": "یورو",
+  "currencyRUB": "روبل روسیه",
+  "saveCurrencyButton": "ذخیره واحد پول",
+  "orderHistoryTitle": "تاریخچه سفارش‌ها",
+  "orderAmount": "مبلغ",
+  "orderStatusDelivered": "تحویل شده",
+  "orderStatusShipping": "در حال ارسال",
+  "orderStatusCancelled": "لغو شده",
+  "orderNumber": "شماره سفارش",
+  "orderDate": "تاریخ",
+  "changePasswordTitle": "تغییر رمز عبور",
+  "currentPassword": "رمز فعلی",
+  "newPassword": "رمز جدید",
+  "repeatNewPassword": "تکرار رمز جدید",
+  "changePasswordButton": "تغییر رمز",
+  "passwordChangedSuccess": "رمز عبور با موفقیت تغییر کرد",
+  "passwordsDoNotMatch": "رمزها با هم مطابقت ندارند",
+  "fieldCannotBeEmpty": "این فیلد نمی‌تواند خالی باشد",
+  "passwordTooShort": "رمز باید حداقل ۶ کاراکتر باشد",
+  "changePasswordTitle": "تغییر رمز عبور",
+  "currentPassword": "رمز فعلی",
+  "newPassword": "رمز جدید",
+  "repeatNewPassword": "تکرار رمز جدید",
+  "changePasswordButton": "تغییر رمز",
+  "passwordChangedSuccess": "رمز عبور با موفقیت تغییر کرد",
+  "passwordsDoNotMatch": "رمزها با هم مطابقت ندارند",
+  "fieldCannotBeEmpty": "این فیلد نمی‌تواند خالی باشد",
+  "passwordTooShort": "رمز باید حداقل ۶ کاراکتر باشد",
+  "editProfile": "ویرایش پروفایل",
+  "nameLabel": "نام کامل",
+  "emailLabel": "ایمیل",
+  "phoneLabel": "شماره موبایل",
+  "saveChanges": "ذخیره تغییرات",
+  "saveChangesSuccess": "اطلاعات با موفقیت ذخیره شد",
+  "fieldCannotBeEmpty": "این فیلد نمی‌تواند خالی باشد",
+  "languageSettingsTitle": "تنظیمات زبان",
+  "selectLanguagePrompt": "زبان مورد نظر را انتخاب کنید",
+  "languageFarsi": "فارسی",
+  "languageEnglish": "انگلیسی",
+  "languageRussian": "روسی",
+  "saveLanguageButton": "ذخیره زبان",
+  "languageSelectedMessage": "زبان \"{language}\" انتخاب شد",
+  "@languageSelectedMessage": {
+    "description": "پیام انتخاب زبان",
+    "placeholders": {
+      "language": {}
+    }
+  },
+  "currencySettingsTitle": "تنظیمات واحد پول",
+"selectCurrencyPrompt": "واحد پول مورد نظر را انتخاب کنید",
+"currencyAFN": " افغانی افغانستان",
+"currencyTJS": "Ѕ سامانی تاجیکستان",
+"currencyUSD": "$ دلار آمریکا",
+"currencyEUR": "€ یورو",
+"currencyRUB": "₽ روبل روسیه",
+"saveCurrencyButton": "ذخیره واحد پول",
+"currencySelectedMessage": "واحد پول \"{currency}\" انتخاب شد",
+"@currencySelectedMessage": {
+  "description": "پیام انتخاب واحد پول",
+  "placeholders": {
+    "currency": {}
+  }
+},
+"orderHistoryTitle": "تاریخچه سفارش‌ها",
+"noOrdersMessage": "شما هنوز سفارشی ثبت نکرده‌اید",
+"orderDateLabel": "تاریخ",
+"orderStatusDelivered": "تحویل شده",
+"orderStatusShipping": "در حال ارسال",
+"orderStatusCancelled": "لغو شده",
+"orderSelectedMessage": "سفارش \"{orderId}\" انتخاب شد",
+"@orderSelectedMessage": {
+  "description": "پیام انتخاب سفارش",
+  "placeholders": {
+    "orderId": {}
+  }
+},
+"savedAddressesTitle": "آدرس‌های ذخیره‌شده",
+"noAddressesMessage": "شما هنوز آدرسی ذخیره نکرده‌اید",
+"addAddressButton": "افزودن آدرس",
+"addAddressMessage": "افزودن آدرس جدید",
+"deleteAddressButton": "حذف آدرس",
+"addressDeletedMessage": "آدرس حذف شد",
+"addressSelectedMessage": "آدرس \"{address}\" انتخاب شد",
+"@addressSelectedMessage": {
+  "description": "پیام انتخاب آدرس",
+  "placeholders": {
+    "address": {}
+  }
+}
+
+
+
 }
