@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
+import 'edit_profile_screen.dart';
+import 'change_password_screen.dart';
+import 'language_settings_screen.dart';
+import 'currency_settings_screen.dart';
+import 'order_history_screen.dart';
+import 'saved_addresses_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -52,27 +58,81 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // ⚙️ تنظیمات حساب
-            _buildProfileAction(icon: Icons.edit, label: loc.editProfile, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.edit,
+              label: loc.editProfile,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+              ),
+            ),
             const SizedBox(height: 12),
-            _buildProfileAction(icon: Icons.lock, label: loc.changePassword, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.lock,
+              label: loc.changePassword,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ChangePasswordScreen()),
+              ),
+            ),
             const SizedBox(height: 12),
-            _buildProfileAction(icon: Icons.language, label: loc.changeLanguage, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.language,
+              label: loc.changeLanguage,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LanguageSettingsScreen()),
+              ),
+            ),
             const SizedBox(height: 12),
-            _buildProfileAction(icon: Icons.attach_money, label: loc.changeCurrency, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.attach_money,
+              label: loc.changeCurrency,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CurrencySettingsScreen()),
+              ),
+            ),
             const SizedBox(height: 12),
 
             // 📦 فعالیت‌های کاربر
             const Divider(height: 32),
-            _buildProfileAction(icon: Icons.favorite, label: loc.navFavorites, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.favorite,
+              label: loc.navFavorites,
+              onTap: () {
+                // TODO: اتصال به صفحه علاقه‌مندی‌ها
+              },
+            ),
             const SizedBox(height: 12),
-            _buildProfileAction(icon: Icons.shopping_bag, label: loc.orderHistory, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.shopping_bag,
+              label: loc.orderHistory,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const OrderHistoryScreen()),
+              ),
+            ),
             const SizedBox(height: 12),
-            _buildProfileAction(icon: Icons.location_on, label: loc.savedAddresses, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.location_on,
+              label: loc.savedAddresses,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SavedAddressesScreen()),
+              ),
+            ),
             const SizedBox(height: 12),
 
             // 🚪 خروج
             const Divider(height: 32),
-            _buildProfileAction(icon: Icons.logout, label: loc.logout, onTap: () {}),
+            _buildProfileAction(
+              icon: Icons.logout,
+              label: loc.logout,
+              onTap: () {
+                // TODO: عملکرد خروج از حساب
+              },
+            ),
           ],
         ),
       ),
