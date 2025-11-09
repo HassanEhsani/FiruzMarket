@@ -328,4 +328,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String productAddedToCartMessage(Object productName) {
     return '\"$productName\" به سبد خرید اضافه شد';
   }
+
+  @override
+  String get themeSystem => 'هماهنگ با سیستم';
+
+  @override
+  String get themeLight => 'روشن';
+
+  @override
+  String get themeDark => 'تاریک';
 }

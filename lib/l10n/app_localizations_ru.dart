@@ -328,4 +328,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String productAddedToCartMessage(Object productName) {
     return '\"$productName\" добавлен в корзину';
   }
+
+  @override
+  String get themeSystem => 'Системная тема';
+
+  @override
+  String get themeLight => 'Светлая';
+
+  @override
+  String get themeDark => 'Тёмная';
 }

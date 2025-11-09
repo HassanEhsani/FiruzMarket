@@ -12,13 +12,14 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final canPop = Navigator.canPop(context);
+    final theme = Theme.of(context); // 👈 گرفتن رنگ‌های تم
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade300, // 🩶 پس‌زمینه خاکستری روشن
+      backgroundColor: theme.scaffoldBackgroundColor, // 👈 رنگ پس‌زمینه از تم
       appBar: AppBar(
         title: Text(loc.navCart),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface, // 👈 رنگ از تم
+        foregroundColor: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface, // 👈 رنگ از تم
         elevation: 1,
         automaticallyImplyLeading: false,
         leading: (showBackButton || canPop)
@@ -40,10 +41,13 @@ class CartScreen extends StatelessWidget {
           final items = cart.items;
 
           if (items.isEmpty) {
-            return const Center(
+            return Center(
               child: Text(
                 'سبد خرید شما خالی است 🛒',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ), // 👈 استایل از تم
               ),
             );
           }
@@ -52,7 +56,7 @@ class CartScreen extends StatelessWidget {
           final mapToRender = grouped.isNotEmpty ? grouped : {'': items};
 
           return ListView(
-            padding: const EdgeInsets.only(bottom: 160), // فضا برای دکمه پایین
+            padding: const EdgeInsets.only(bottom: 160),
             children: [
               const SizedBox(height: 10),
               for (final entry in mapToRender.entries)
@@ -65,10 +69,10 @@ class CartScreen extends StatelessWidget {
                             horizontal: 16, vertical: 8),
                         child: Text(
                           entry.key,
-                          style: const TextStyle(
+                          style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
-                          ),
+                          ), // 👈 استایل از تم
                         ),
                       ),
                     ...entry.value.map(
@@ -78,7 +82,7 @@ class CartScreen extends StatelessWidget {
                         child: Material(
                           elevation: 2,
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.white,
+                          color: theme.cardColor, // 👈 رنگ کارت از تم
                           child: Padding(
                             padding: const EdgeInsets.all(12),
                             child: Row(
@@ -93,7 +97,9 @@ class CartScreen extends StatelessWidget {
                                           fit: BoxFit.cover,
                                         ),
                                       )
-                                    : const Icon(Icons.shopping_bag, size: 64),
+                                    : Icon(Icons.shopping_bag,
+                                        size: 64,
+                                        color: theme.iconTheme.color), // 👈 رنگ آیکون از تم
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
@@ -102,17 +108,20 @@ class CartScreen extends StatelessWidget {
                                     children: [
                                       Text(
                                         item.name,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15),
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ), // 👈 استایل از تم
                                       ),
                                       const SizedBox(height: 4),
-                                      Text('${item.price} ₽'),
+                                      Text('${item.price} ₽',
+                                          style: theme.textTheme.bodySmall),
                                       if (item.discountPrice != null)
                                         Text(
                                           '${item.discountPrice} ₽ با کارت',
-                                          style: const TextStyle(
-                                              color: Colors.green),
+                                          style: theme.textTheme.bodySmall?.copyWith(
+                                            color: Colors.green,
+                                          ), // 👈 رنگ تخفیف
                                         ),
                                     ],
                                   ),
@@ -131,7 +140,8 @@ class CartScreen extends StatelessWidget {
                                           onPressed: () =>
                                               cart.decreaseQuantity(item),
                                         ),
-                                        Text('${item.quantity}'),
+                                        Text('${item.quantity}',
+                                            style: theme.textTheme.bodyMedium),
                                         IconButton(
                                           icon: const Icon(Icons.add),
                                           onPressed: () =>
@@ -154,7 +164,7 @@ class CartScreen extends StatelessWidget {
         },
       ),
 
-      // 🟧 دکمه و قیمت پایین صفحه وسط‌چین و زیر هم
+      // 🟧 دکمه و قیمت پایین صفحه
       bottomNavigationBar: Consumer<CartController>(
         builder: (context, cart, _) {
           if (cart.items.isEmpty) return const SizedBox.shrink();
@@ -162,7 +172,7 @@ class CartScreen extends StatelessWidget {
           return Container(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: theme.bottomAppBarTheme.color ?? theme.colorScheme.surface, // 👈 رنگ از تم
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black26,
@@ -176,10 +186,10 @@ class CartScreen extends StatelessWidget {
               children: [
                 Text(
                   'مجموع: ${cart.totalPrice.toStringAsFixed(0)} ₽',
-                  style: const TextStyle(
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
-                  ),
+                  ), // 👈 استایل از تم
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
@@ -194,17 +204,26 @@ class CartScreen extends StatelessWidget {
                   ),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('سفارش شما ثبت شد ✅'),
-                        duration: Duration(seconds: 2),
+                      SnackBar(
+                        content: Text(
+                          'سفارش شما ثبت شد ✅',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                        duration: const Duration(seconds: 2),
+                        backgroundColor: Colors.green,
                       ),
                     );
                     cart.clearCart();
                   },
-                  child: const Text(
+                  child: Text(
                     'ثبت سفارش',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],

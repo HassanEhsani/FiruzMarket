@@ -225,5 +225,8 @@
     "placeholders": {
       "productName": {}
     }
-  }
+  },
+  "themeSystem": "System Default",
+  "themeLight": "Light",
+  "themeDark": "Dark"
 }

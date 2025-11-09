@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../l10n/app_localizations.dart';
+import '../providers/theme_controller.dart'; // 👈 اضافه شده برای کنترل تم
 import 'edit_profile_screen.dart';
 import 'change_password_screen.dart';
 import 'language_settings_screen.dart';
@@ -14,13 +16,17 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final themeController = Provider.of<ThemeController>(context); // 👈 دسترسی به کنترلر تم
+    final theme = Theme.of(context); // 👈 گرفتن تم فعلی برای رنگ‌ها
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      // 👇 رنگ پس‌زمینه از تم گرفته شده تا با حالت تاریک/روشن هماهنگ باشه
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(loc.profileTitle),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
+        // 👇 رنگ‌ها از تم گرفته شده
+        backgroundColor: theme.appBarTheme.backgroundColor ?? theme.colorScheme.surface,
+        foregroundColor: theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface,
         elevation: 0.5,
       ),
       body: SingleChildScrollView(
@@ -34,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: theme.shadowColor.withOpacity(0.2), // 👈 رنگ سایه از تم
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -48,26 +54,27 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               'Firuz',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(
               'Firuz@example.com',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor),
             ),
             const SizedBox(height: 4),
             Text(
               '📱 07123456789',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor),
             ),
             Text(
               '🏠 Sanit pitersburg, Russia',
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+              style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor),
             ),
             const SizedBox(height: 32),
 
             // ⚙️ تنظیمات حساب
             _buildProfileAction(
+              context: context,
               icon: Icons.edit,
               label: loc.editProfile,
               onTap: () => Navigator.push(
@@ -77,6 +84,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _buildProfileAction(
+              context: context,
               icon: Icons.lock,
               label: loc.changePassword,
               onTap: () => Navigator.push(
@@ -86,6 +94,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _buildProfileAction(
+              context: context,
               icon: Icons.language,
               label: loc.changeLanguage,
               onTap: () => Navigator.push(
@@ -97,6 +106,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _buildProfileAction(
+              context: context,
               icon: Icons.attach_money,
               label: loc.changeCurrency,
               onTap: () => Navigator.push(
@@ -108,13 +118,47 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
+            // 🌗 انتخاب تم (تاریک/روشن/سیستمی)
+            const Divider(height: 32),
+            Row(
+              children: [
+                const Icon(Icons.brightness_6, color: Colors.deepOrange),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: DropdownButton<ThemeMode>(
+                    value: themeController.themeMode,
+                    isExpanded: true,
+                    items: [
+                      DropdownMenuItem(
+                        value: ThemeMode.system,
+                        child: Text(loc.themeSystem),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.light,
+                        child: Text(loc.themeLight),
+                      ),
+                      DropdownMenuItem(
+                        value: ThemeMode.dark,
+                        child: Text(loc.themeDark),
+                      ),
+                    ],
+                    onChanged: (mode) {
+                      if (mode != null) {
+                        themeController.setThemeMode(mode); // 👈 تغییر تم
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+
             // 📦 فعالیت‌های کاربر
             const Divider(height: 32),
             _buildProfileAction(
+              context: context,
               icon: Icons.favorite,
               label: loc.navFavorites,
               onTap: () {
-                // TODO: اتصال به صفحه علاقه‌مندی‌ها
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -125,6 +169,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _buildProfileAction(
+              context: context,
               icon: Icons.shopping_bag,
               label: loc.orderHistory,
               onTap: () => Navigator.push(
@@ -134,6 +179,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _buildProfileAction(
+              context: context,
               icon: Icons.location_on,
               label: loc.savedAddresses,
               onTap: () => Navigator.push(
@@ -146,6 +192,7 @@ class ProfileScreen extends StatelessWidget {
             // 🚪 خروج
             const Divider(height: 32),
             _buildProfileAction(
+              context: context,
               icon: Icons.logout,
               label: loc.logout,
               onTap: () {
@@ -159,21 +206,25 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildProfileAction({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
+    final theme = Theme.of(context); // 👈 گرفتن رنگ‌ها از تم
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          // 👇 رنگ پس‌زمینه از تم گرفته شده
+          color: theme.cardColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.05),
+              color: theme.shadowColor.withOpacity(0.05),
               blurRadius: 6,
               offset: const Offset(0, 2),
             ),
@@ -185,7 +236,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(width: 12),
             Text(
               label,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
             ),
             const Spacer(),
             const Icon(Icons.chevron_right, color: Colors.grey),

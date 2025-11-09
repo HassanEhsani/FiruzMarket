@@ -225,5 +225,8 @@
     "placeholders": {
       "productName": {}
     }
-  }
+  },
+  "themeSystem": "Системная тема",
+  "themeLight": "Светлая",
+  "themeDark": "Тёмная"
 }

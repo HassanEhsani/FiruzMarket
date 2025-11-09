@@ -185,57 +185,57 @@
     }
   },
   "currencySettingsTitle": "تنظیمات واحد پول",
-"selectCurrencyPrompt": "واحد پول مورد نظر را انتخاب کنید",
-"currencyAFN": " افغانی افغانستان",
-"currencyTJS": "Ѕ سامانی تاجیکستان",
-"currencyUSD": "$ دلار آمریکا",
-"currencyEUR": "€ یورو",
-"currencyRUB": "₽ روبل روسیه",
-"saveCurrencyButton": "ذخیره واحد پول",
-"currencySelectedMessage": "واحد پول \"{currency}\" انتخاب شد",
-"@currencySelectedMessage": {
-  "description": "پیام انتخاب واحد پول",
-  "placeholders": {
-    "currency": {}
-  }
-},
-"orderHistoryTitle": "تاریخچه سفارش‌ها",
-"noOrdersMessage": "شما هنوز سفارشی ثبت نکرده‌اید",
-"orderDateLabel": "تاریخ",
-"orderStatusDelivered": "تحویل شده",
-"orderStatusShipping": "در حال ارسال",
-"orderStatusCancelled": "لغو شده",
-"orderSelectedMessage": "سفارش \"{orderId}\" انتخاب شد",
-"@orderSelectedMessage": {
-  "description": "پیام انتخاب سفارش",
-  "placeholders": {
-    "orderId": {}
-  }
-},
-"savedAddressesTitle": "آدرس‌های ذخیره‌شده",
-"noAddressesMessage": "شما هنوز آدرسی ذخیره نکرده‌اید",
-"addAddressButton": "افزودن آدرس",
-"addAddressMessage": "افزودن آدرس جدید",
-"deleteAddressButton": "حذف آدرس",
-"addressDeletedMessage": "آدرس حذف شد",
-"addressSelectedMessage": "آدرس \"{address}\" انتخاب شد",
-"@addressSelectedMessage": {
-  "description": "پیام انتخاب آدرس",
-  "placeholders": {
-    "address": {}
-  }
-},
-"favoritesTitle": "علاقه‌مندی‌ها",
-"noFavoritesMessage": "محصولی در علاقه‌مندی‌ها نیست",
-"addToCartButton": "افزودن به سبد خرید",
-"productAddedToCartMessage": "\"{productName}\" به سبد خرید اضافه شد",
-"@productAddedToCartMessage": {
-  "description": "پیام افزودن محصول به سبد خرید",
-  "placeholders": {
-    "productName": {}
-  }
-}
-
-
-
+  "selectCurrencyPrompt": "واحد پول مورد نظر را انتخاب کنید",
+  "currencyAFN": " افغانی افغانستان",
+  "currencyTJS": "Ѕ سامانی تاجیکستان",
+  "currencyUSD": "$ دلار آمریکا",
+  "currencyEUR": "€ یورو",
+  "currencyRUB": "₽ روبل روسیه",
+  "saveCurrencyButton": "ذخیره واحد پول",
+  "currencySelectedMessage": "واحد پول \"{currency}\" انتخاب شد",
+  "@currencySelectedMessage": {
+    "description": "پیام انتخاب واحد پول",
+    "placeholders": {
+      "currency": {}
+    }
+  },
+  "orderHistoryTitle": "تاریخچه سفارش‌ها",
+  "noOrdersMessage": "شما هنوز سفارشی ثبت نکرده‌اید",
+  "orderDateLabel": "تاریخ",
+  "orderStatusDelivered": "تحویل شده",
+  "orderStatusShipping": "در حال ارسال",
+  "orderStatusCancelled": "لغو شده",
+  "orderSelectedMessage": "سفارش \"{orderId}\" انتخاب شد",
+  "@orderSelectedMessage": {
+    "description": "پیام انتخاب سفارش",
+    "placeholders": {
+      "orderId": {}
+    }
+  },
+  "savedAddressesTitle": "آدرس‌های ذخیره‌شده",
+  "noAddressesMessage": "شما هنوز آدرسی ذخیره نکرده‌اید",
+  "addAddressButton": "افزودن آدرس",
+  "addAddressMessage": "افزودن آدرس جدید",
+  "deleteAddressButton": "حذف آدرس",
+  "addressDeletedMessage": "آدرس حذف شد",
+  "addressSelectedMessage": "آدرس \"{address}\" انتخاب شد",
+  "@addressSelectedMessage": {
+    "description": "پیام انتخاب آدرس",
+    "placeholders": {
+      "address": {}
+    }
+  },
+  "favoritesTitle": "علاقه‌مندی‌ها",
+  "noFavoritesMessage": "محصولی در علاقه‌مندی‌ها نیست",
+  "addToCartButton": "افزودن به سبد خرید",
+  "productAddedToCartMessage": "\"{productName}\" به سبد خرید اضافه شد",
+  "@productAddedToCartMessage": {
+    "description": "پیام افزودن محصول به سبد خرید",
+    "placeholders": {
+      "productName": {}
+    }
+  },
+  "themeSystem": "هماهنگ با سیستم",
+  "themeLight": "روشن",
+  "themeDark": "تاریک"
 }

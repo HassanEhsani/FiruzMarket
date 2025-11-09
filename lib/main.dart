@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'firebase_options.dart';
 import 'providers/product_controller.dart';
 import 'providers/cart_controller.dart';
+import 'providers/theme_controller.dart'; // 👈 کنترلر تم
 import 'screens/products_screen.dart';
 import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
@@ -17,7 +18,6 @@ import 'l10n/app_localizations.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // ✅ بررسی دقیق‌تر برای جلوگیری از duplicate-app
   FirebaseApp app;
   try {
     if (Firebase.apps.isEmpty) {
@@ -34,17 +34,15 @@ Future<void> main() async {
     app = Firebase.apps.first;
   }
 
-  // 🧩 تشخیص host بر اساس پلتفرم
   String host;
   if (kIsWeb) {
     host = '127.0.0.1';
   } else if (Platform.isAndroid) {
-    host = '10.0.2.2'; // مخصوص Emulator اندروید
+    host = '10.0.2.2';
   } else {
     host = '127.0.0.1';
   }
 
-  // 🚀 اتصال به Emulator
   try {
     FirebaseFirestore.instance.useFirestoreEmulator(host, 8084);
     FirebaseStorage.instance.useStorageEmulator(host, 9198);
@@ -53,7 +51,6 @@ Future<void> main() async {
     print('⚠️ Emulator connection failed: $e');
   }
 
-  // 🛒 کنترلرها
   final productController = ProductController();
   productController.initSampleProducts();
 
@@ -62,6 +59,7 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => productController),
         ChangeNotifierProvider(create: (_) => CartController()),
+        ChangeNotifierProvider(create: (_) => ThemeController()), // 👈 ثبت کنترلر تم
       ],
       child: const MyApp(),
     ),
@@ -91,7 +89,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context); // 👈 گرفتن وضعیت تم از کنترلر
+
     return MaterialApp(
+      // 🌍 تنظیم زبان اپلیکیشن
       locale: _locale,
       supportedLocales: const [
         Locale('fa'),
@@ -104,10 +105,12 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF4CAF50),
-        useMaterial3: true,
-      ),
+
+      // 🎨 تنظیم تم برای کل اپلیکیشن
+      theme: ThemeData.light(), // 👈 تم روشن
+      darkTheme: ThemeData.dark(), // 👈 تم تاریک
+      themeMode: themeController.themeMode, // 👈 انتخاب حالت تم از کنترلر (روشن، تاریک، یا سیستم)
+
       debugShowCheckedModeBanner: false,
       home: ProductsScreen(onLocaleChanged: changeLocale),
       routes: {

@@ -23,8 +23,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context); // 👈 گرفتن رنگ‌های تم
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor, // 👈 رنگ پس‌زمینه از تم
       body: SafeArea(
         child: Consumer<ProductController>(
           builder: (context, controller, _) {
@@ -49,7 +51,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           },
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: _buildBottomNavBar(context), // 👈 ارسال context برای تم
     );
   }
 
@@ -74,6 +76,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   Widget _buildHeaderBar(BuildContext context) {
     final loc = AppLocalizations.of(context);
     final currentLocale = Localizations.localeOf(context);
+    final theme = Theme.of(context); // 👈 گرفتن رنگ‌های تم
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,11 +85,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
             children: [
-              const Icon(Icons.location_on, color: Colors.grey),
+              Icon(Icons.location_on, color: theme.iconTheme.color), // 👈 رنگ آیکون از تم
               const SizedBox(width: 4),
-              const Text(
+              Text(
                 'کازانسکایا، ۴',
-                style: TextStyle(fontSize: 14, color: Colors.black87),
+                style: theme.textTheme.bodyMedium?.copyWith(fontSize: 14), // 👈 رنگ متن از تم
               ),
               const Spacer(),
               LanguageSwitcher(
@@ -96,9 +99,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
               const SizedBox(width: 8),
               const Icon(Icons.monetization_on, color: Colors.amber),
               const SizedBox(width: 4),
-              const Text(
+              Text(
                 '۲۰',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -111,7 +117,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               prefixIcon: const Icon(Icons.search),
               suffixIcon: const Icon(Icons.mic),
               filled: true,
-              fillColor: Colors.grey.shade100,
+              fillColor: theme.inputDecorationTheme.fillColor ?? theme.cardColor, // 👈 رنگ زمینه از تم
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -127,11 +133,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
-              _buildCategoryIcon('assets/images/clothing.png', loc.categoryClothing),
-              _buildCategoryIcon('assets/images/digital.png', loc.categoryDigital),
-              _buildCategoryIcon('assets/images/home.png', loc.categoryHome),
-              _buildCategoryIcon('assets/images/sports.png', loc.categorySports),
-              _buildCategoryIcon('assets/images/all.png', loc.categoryAll),
+              _buildCategoryIcon(context, 'assets/images/clothing.png', loc.categoryClothing),
+              _buildCategoryIcon(context, 'assets/images/digital.png', loc.categoryDigital),
+              _buildCategoryIcon(context, 'assets/images/home.png', loc.categoryHome),
+              _buildCategoryIcon(context, 'assets/images/sports.png', loc.categorySports),
+              _buildCategoryIcon(context, 'assets/images/all.png', loc.categoryAll),
             ],
           ),
         ),
@@ -139,7 +145,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
     );
   }
 
-  Widget _buildCategoryIcon(String iconPath, String label) {
+  Widget _buildCategoryIcon(BuildContext context, String iconPath, String label) {
+    final theme = Theme.of(context); // 👈 گرفتن رنگ‌های تم
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
@@ -148,11 +156,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: theme.cardColor, // 👈 رنگ زمینه از تم
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: theme.shadowColor.withOpacity(0.1), // 👈 سایه از تم
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -164,20 +172,21 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
           ),
           const SizedBox(height: 4),
-          Text(label, style: const TextStyle(fontSize: 12, color: Colors.black87)),
+          Text(label, style: theme.textTheme.bodySmall?.copyWith(fontSize: 12)), // 👈 رنگ متن از تم
         ],
       ),
     );
   }
 
-  Widget _buildBottomNavBar() {
+  Widget _buildBottomNavBar(BuildContext context) {
     final loc = AppLocalizations.of(context);
+    final theme = Theme.of(context); // 👈 گرفتن رنگ‌های تم
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.colorScheme.surface, // 👈 رنگ مناسب برای BottomNavigationBar
       selectedItemColor: Colors.deepOrange,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: theme.unselectedWidgetColor, // 👈 رنگ غیرفعال از تم
       currentIndex: selectedIndex,
       onTap: (index) {
         setState(() => selectedIndex = index);

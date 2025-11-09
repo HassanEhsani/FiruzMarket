@@ -328,4 +328,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String productAddedToCartMessage(Object productName) {
     return '\"$productName\" has been added to your cart';
   }
+
+  @override
+  String get themeSystem => 'System Default';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
 }
