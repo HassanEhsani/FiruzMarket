@@ -3,11 +3,19 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'firebase_options.dart'; // فعال شده ✅
+import 'admin/admin_panel_screen.dart';
+import 'admin/admin_dashboard.dart';
+import 'admin/manage_products_screen.dart';
+import 'admin/manage_categories_screen.dart';
+import 'admin/admin_login_screen.dart';
+
+import 'firebase_options.dart';
 import 'providers/product_controller.dart';
 import 'providers/cart_controller.dart';
+import 'providers/category_controller.dart';
 import 'screens/products_screen.dart';
 import 'screens/cart_screen.dart';
 import 'l10n/app_localizations.dart';
@@ -15,16 +23,28 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 🔹 برای وب باید options اضافه شود
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Firebase initialization
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+      print("✅ Firebase initialized (admin)");
+    } else {
+      print("♻️ Using existing Firebase app");
+    }
+  } catch (e) {
+    print("⚠️ Firebase already initialized: $e");
+  }
 
-  // 🔹 اتصال به Firestore Emulator
-  FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8084);
-
-  // 🔹 اتصال به Storage Emulator
-  FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9198);
-
-  print('✅ Connected to Firebase Emulators');
+  // Emulator only for Android / iOS
+  if (!kIsWeb) {
+    FirebaseFirestore.instance.useFirestoreEmulator('127.0.0.1', 8084);
+    FirebaseStorage.instance.useStorageEmulator('127.0.0.1', 9198);
+    print('🟢 Using Firebase Emulator');
+  } else {
+    print('🟡 Web → Emulator Firestore/Storage skipped (not fully supported)');
+  }
 
   final productController = ProductController();
   productController.initSampleProducts();
@@ -34,6 +54,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => productController),
         ChangeNotifierProvider(create: (_) => CartController()),
+        ChangeNotifierProvider(create: (_) => CategoryController()), // ✅ اضافه شد
       ],
       child: const MyApp(),
     ),
@@ -65,7 +86,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       locale: _locale,
-      supportedLocales: const [Locale('fa'), Locale('ru'), Locale('en')],
+      supportedLocales: const [
+        Locale('fa'),
+        Locale('ru'),
+        Locale('en'),
+      ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -77,8 +102,16 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: ProductsScreen(onLocaleChanged: changeLocale),
-      routes: {'/cart': (context) => CartScreen(showBackButton: true)},
+
+      home: AdminLoginScreen(selectedLocale: _locale),
+
+      routes: {
+        '/admin/panel': (context) =>
+            AdminPanelScreen(selectedLocale: _locale),
+        '/admin/dashboard': (context) => const AdminDashboard(),
+        '/admin/products': (context) => const ManageProductsScreen(),
+        '/admin/categories': (context) => const ManageCategoriesScreen(),
+      },
     );
   }
 }

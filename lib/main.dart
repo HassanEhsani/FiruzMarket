@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'providers/category_controller.dart';
 
 import 'firebase_options.dart';
 import 'providers/product_controller.dart';
@@ -34,19 +35,20 @@ Future<void> main() async {
     app = Firebase.apps.first;
   }
 
+  // 🔗 اتصال به Emulator
   String host;
   if (kIsWeb) {
     host = '127.0.0.1';
   } else if (Platform.isAndroid) {
-    host = '10.0.2.2';
+    host = '10.0.2.2'; // برای Android Emulator
   } else {
-    host = '127.0.0.1';
+    host = '127.0.0.1'; // برای iOS/Mac/Windows
   }
 
   try {
     FirebaseFirestore.instance.useFirestoreEmulator(host, 8084);
     FirebaseStorage.instance.useStorageEmulator(host, 9198);
-    print('✅ Connected to Firebase Emulators at $host');
+    print('🟢 Connected to Firebase Emulators at $host');
   } catch (e) {
     print('⚠️ Emulator connection failed: $e');
   }
@@ -55,15 +57,21 @@ Future<void> main() async {
   productController.initSampleProducts();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => productController),
-        ChangeNotifierProvider(create: (_) => CartController()),
-        ChangeNotifierProvider(create: (_) => ThemeController()), // 👈 ثبت کنترلر تم
-      ],
-      child: const MyApp(),
-    ),
-  );
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => productController),
+      ChangeNotifierProvider(create: (_) {
+        final c = CategoryController();
+        c.loadCategories(); // 👈 بارگذاری دسته‌ها بلافاصله بعد از ساخت
+        return c;
+      }),
+      ChangeNotifierProvider(create: (_) => CartController()),
+      ChangeNotifierProvider(create: (_) => ThemeController()),
+    ],
+    child: const MyApp(),
+  ),
+);
+
 }
 
 class MyApp extends StatefulWidget {

@@ -337,4 +337,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get themeDark => 'Тёмная';
+
+  @override
+  String get back_to_login => 'Назад к входу';
+
+  @override
+  String get wrong_password => 'Неверный пароль';
 }

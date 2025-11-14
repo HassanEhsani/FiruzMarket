@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/category_controller.dart';
+import 'package:firuz_market/providers/category_controller.dart';
 
 class AddCategoryScreen extends StatefulWidget {
   const AddCategoryScreen({super.key});
@@ -45,13 +45,11 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final categoryController = Provider.of<CategoryController>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('افزودن دسته‌بندی'),
-        backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
+        backgroundColor: const Color(0xFFB2DFDB),
         centerTitle: true,
         elevation: 0,
         foregroundColor: Colors.black87,
@@ -99,15 +97,17 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
               ),
             ),
             const SizedBox(height: 12),
+
+            // ✅ نمایش دسته‌ها با Consumer به‌جای StreamBuilder
             Expanded(
-              child: StreamBuilder<List<String>>(
-                stream: categoryController.categoryStream,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
+              child: Consumer<CategoryController>(
+                builder: (context, controller, _) {
+                  final categories = controller.categories;
+
+                  if (!controller.isLoaded) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  final categories = snapshot.data!;
                   if (categories.isEmpty) {
                     return const Center(
                       child: Text(

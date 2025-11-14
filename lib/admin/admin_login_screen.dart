@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'admin_dashboard.dart';
 import '../l10n/app_localizations.dart';
+import 'admin_panel_screen.dart';
+import '../admin_main.dart'; // برای دسترسی به MyApp.setLocale
 
 class AdminLoginScreen extends StatefulWidget {
   final Locale selectedLocale;
@@ -15,24 +17,47 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   String? _errorMessage;
 
   final String _adminPassword = 'firuz2025';
+  late Locale _currentLocale;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentLocale = widget.selectedLocale;
+  }
 
   void _login() {
-    if (_passwordController.text == _adminPassword) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AdminDashboard()),
-      );
-    } else {
-      setState(() {
-        _errorMessage = 'رمز اشتباه است';
-      });
-    }
+  if (_passwordController.text == _adminPassword) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AdminPanelScreen(selectedLocale: widget.selectedLocale),
+      ),
+    );
+  } else {
+    setState(() {
+      _errorMessage = AppLocalizations.of(context)!.wrong_password;
+    });
+  }
+}
+
+
+  void _changeLocale(Locale newLocale) {
+    setState(() {
+      _currentLocale = newLocale;
+    });
+    MyApp.setLocale(context, newLocale);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AdminLoginScreen(selectedLocale: newLocale),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: widget.selectedLocale.languageCode == 'fa'
+      textDirection: _currentLocale.languageCode == 'fa'
           ? TextDirection.rtl
           : TextDirection.ltr,
       child: Scaffold(
@@ -51,6 +76,25 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                     color: Colors.green.shade700,
                   ),
                 ),
+                const SizedBox(height: 16),
+
+                // 👇 Dropdown انتخاب زبان
+                DropdownButton<Locale>(
+                  value: _currentLocale,
+                  underline: const SizedBox(),
+                  icon: const Icon(Icons.language, color: Colors.black87),
+                  items: const [
+                    DropdownMenuItem(value: Locale('fa'), child: Text('فارسی')),
+                    DropdownMenuItem(value: Locale('en'), child: Text('English')),
+                    DropdownMenuItem(value: Locale('ru'), child: Text('Русский')),
+                  ],
+                  onChanged: (Locale? newLocale) {
+                    if (newLocale != null) {
+                      _changeLocale(newLocale);
+                    }
+                  },
+                ),
+
                 const SizedBox(height: 16),
                 Text(
                   AppLocalizations.of(context)!.adminWelcome,

@@ -337,4 +337,10 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get themeDark => 'تاریک';
+
+  @override
+  String get back_to_login => 'بازگشت به ورود';
+
+  @override
+  String get wrong_password => 'رمز اشتباه است';
 }

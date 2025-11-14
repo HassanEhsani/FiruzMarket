@@ -735,6 +735,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get themeDark;
+
+  /// No description provided for @back_to_login.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Login'**
+  String get back_to_login;
+
+  /// No description provided for @wrong_password.
+  ///
+  /// In en, this message translates to:
+  /// **'The password is incorrect'**
+  String get wrong_password;
 }
 
 class _AppLocalizationsDelegate

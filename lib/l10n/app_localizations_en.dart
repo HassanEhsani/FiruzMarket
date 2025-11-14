@@ -337,4 +337,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get themeDark => 'Dark';
+
+  @override
+  String get back_to_login => 'Back to Login';
+
+  @override
+  String get wrong_password => 'The password is incorrect';
 }

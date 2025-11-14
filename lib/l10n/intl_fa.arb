@@ -237,5 +237,7 @@
   },
   "themeSystem": "هماهنگ با سیستم",
   "themeLight": "روشن",
-  "themeDark": "تاریک"
+  "themeDark": "تاریک",
+  "back_to_login": "بازگشت به ورود",
+  "wrong_password": "رمز اشتباه است"
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CategoryController extends ChangeNotifier {
@@ -7,46 +7,55 @@ class CategoryController extends ChangeNotifier {
 
   List<String> get categories => List.unmodifiable(_categories);
 
-  Stream<List<String>> get categoryStream => FirebaseFirestore.instance
-      .collection('categories')
-      .snapshots()
-      .map((snapshot) {
-    final newList = <String>[];
-    for (var doc in snapshot.docs) {
-      final name = doc['name']?.toString().trim();
-      if (name != null && name.isNotEmpty) {
-        newList.add(name);
+  /// بارگذاری یک‌باره‌ی دسته‌ها از Firestore
+  Future<void> loadCategories() async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('categories')
+          .get();
+
+      final list = <String>[];
+      for (var doc in snapshot.docs) {
+        final name = doc.data()['name']?.toString().trim();
+        if (name != null && name.isNotEmpty) {
+          list.add(name);
+        }
       }
-    }
 
-    // فقط اگر لیست تغییر کرده باشه، به‌روزرسانی کن
-    if (_categories.join(',') != newList.join(',')) {
-      _categories = newList;
+      _categories = list;
       isLoaded = true;
-      debugPrint('📡 دسته‌ها به‌صورت real-time دریافت شدند: $_categories');
+
+      debugPrint("📡 دسته‌ها بارگذاری شدند: $_categories");
       notifyListeners();
+    } catch (e) {
+      debugPrint("❌ خطا در بارگذاری دسته‌ها: $e");
     }
+  }
 
-    return newList;
-  });
-
+  /// افزودن دسته
   Future<void> addCategory(String name) async {
     final trimmed = name.trim();
+
     if (trimmed.isEmpty || _categories.contains(trimmed)) {
-      debugPrint('⚠️ دسته خالی بود یا تکراری بود: "$trimmed"');
+      debugPrint('⚠️ دسته خالی یا تکراری: "$trimmed"');
       return;
     }
 
     try {
-      await FirebaseFirestore.instance
-          .collection('categories')
-          .add({'name': trimmed});
+      await FirebaseFirestore.instance.collection('categories').add({
+        'name': trimmed,
+      });
+
+      _categories.add(trimmed);
+      notifyListeners();
+
       debugPrint('✅ دسته اضافه شد: $trimmed');
     } catch (e) {
       debugPrint('❌ خطا در افزودن دسته: $e');
     }
   }
 
+  /// حذف دسته
   Future<void> deleteCategory(String name) async {
     try {
       final snapshot = await FirebaseFirestore.instance
@@ -57,6 +66,9 @@ class CategoryController extends ChangeNotifier {
       for (var doc in snapshot.docs) {
         await doc.reference.delete();
       }
+
+      _categories.remove(name);
+      notifyListeners();
 
       debugPrint('🗑️ دسته حذف شد: $name');
     } catch (e) {

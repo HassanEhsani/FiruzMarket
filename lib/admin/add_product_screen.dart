@@ -6,6 +6,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
+import 'package:firuz_market/providers/category_controller.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -20,7 +22,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final TextEditingController _priceController = TextEditingController();
   File? _selectedImage;
   PlatformFile? _webImage;
-  String? selectedCategory;
+  // String? selectedCategory;
+  bool _submitting = false;
+  String? selectedCategory; // 👈 اینجا بذار
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _priceController.dispose();
+    super.dispose();
+  }
 
   String normalizeNumber(String input) {
     const faToEn = {
@@ -49,50 +60,61 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   Future<void> _pickImage() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      withData: kIsWeb,
-    );
-
-    if (result == null || result.files.isEmpty) {
-      debugPrint('No image selected.');
-      return;
-    }
-
-    if (kIsWeb) {
-      setState(() => _webImage = result.files.first);
-      debugPrint(
-        'Picked web image: name=${_webImage!.name}, bytes=${_webImage!.bytes?.length}',
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        withData: kIsWeb,
       );
-    } else {
-      final pathStr = result.files.single.path;
-      if (pathStr == null || pathStr.contains('/assets/')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'لطفاً تصویر را از کامپیوتر انتخاب کنید، نه از assets پروژه',
+
+      if (result == null || result.files.isEmpty) {
+        debugPrint('No image selected.');
+        return;
+      }
+
+      if (kIsWeb) {
+        setState(() => _webImage = result.files.first);
+        debugPrint(
+          'Picked web image: name=${_webImage!.name}, bytes=${_webImage!.bytes?.length}',
+        );
+      } else {
+        final pathStr = result.files.single.path;
+        if (pathStr == null || pathStr.contains('/assets/')) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text(
+                'لطفاً تصویر را از کامپیوتر انتخاب کنید، نه از assets پروژه',
+              ),
+              backgroundColor: Colors.red.shade400,
             ),
-            backgroundColor: Colors.red.shade400,
-          ),
-        );
-        return;
+          );
+          return;
+        }
+        final f = File(pathStr);
+        if (!await f.exists()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('فایل انتخاب‌شده وجود ندارد'),
+              backgroundColor: Colors.red.shade400,
+            ),
+          );
+          return;
+        }
+        setState(() => _selectedImage = f);
+        debugPrint('Picked file: $pathStr');
       }
-      final f = File(pathStr);
-      if (!await f.exists()) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('فایل انتخاب‌شده وجود ندارد'),
-            backgroundColor: Colors.red.shade400,
-          ),
-        );
-        return;
-      }
-      setState(() => _selectedImage = f);
-      debugPrint('Picked file: $pathStr');
+    } catch (e, st) {
+      debugPrint('Error picking image: $e\n$st');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('خطا در انتخاب تصویر: $e'),
+          backgroundColor: Colors.red.shade400,
+        ),
+      );
     }
   }
 
   Future<void> _submitProduct() async {
+    if (_submitting) return;
     if (!_formKey.currentState!.validate()) return;
 
     final isImageSelected = kIsWeb ? _webImage != null : _selectedImage != null;
@@ -116,10 +138,38 @@ class _AddProductScreenState extends State<AddProductScreen> {
       return;
     }
 
-    try {
-      final bucket = FirebaseStorage.instance.bucket;
-      debugPrint('Using storage bucket: $bucket');
+    // validate price numeric
+    final normalizedPrice = normalizeNumber(_priceController.text.trim());
+    final price = int.tryParse(normalizedPrice);
+    if (price == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('قیمت را به صورت عددی وارد کنید'),
+          backgroundColor: Colors.orange.shade400,
+        ),
+      );
+      return;
+    }
 
+    setState(() => _submitting = true);
+
+    try {
+      // بررسی اینکه آیا احتمالاً به Emulator متصل هستیم
+      bool isUsingEmulator = false;
+      try {
+        final host = FirebaseFirestore.instance.settings.host;
+        if (host != null &&
+            (host.contains('localhost') ||
+                host.contains('127.0.0.1') ||
+                host.contains('10.0.2.2'))) {
+          isUsingEmulator = true;
+        }
+      } catch (_) {
+        // بعضی پلتفرم‌ها ممکن است دسترسی به host ندهند؛ فرض بر عدم emulator در آن‌صورت
+        isUsingEmulator = false;
+      }
+
+      // آماده‌سازی برای آپلود
       final uuid = const Uuid().v4();
       final originalName = kIsWeb
           ? _webImage!.name
@@ -128,11 +178,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ? originalName.split('.').last
           : 'jpg';
       final imageName = '$uuid.$ext';
-
-      final storageRef = FirebaseStorage.instance.ref(
-        'product_images/$imageName',
-      );
-      debugPrint('Uploading to: product_images/$imageName');
+      final storagePath = 'product_images/$imageName';
+      final storageRef = FirebaseStorage.instance.ref(storagePath);
+      debugPrint('Uploading to: $storagePath');
 
       final metadata = SettableMetadata(contentType: 'image/$ext');
 
@@ -146,42 +194,78 @@ class _AddProductScreenState extends State<AddProductScreen> {
         }
         uploadTask = storageRef.putData(bytes, metadata);
       } else {
+        if (_selectedImage == null) {
+          throw Exception('فایل محلی پیدا نشد.');
+        }
         uploadTask = storageRef.putFile(_selectedImage!, metadata);
       }
 
-      final snapshot = await uploadTask;
-      debugPrint(
-        'Upload state: ${snapshot.state}, bytesTransferred=${snapshot.bytesTransferred}',
-      );
-
-      if (snapshot.state != TaskState.success) {
-        throw Exception('آپلود تصویر موفق نبود. وضعیت: ${snapshot.state}');
-      }
-
-      // 🔹 اصلاح‌شده برای کار با Emulator
-      String imageUrl;
+      // منتظر اتمام آپلود (با timeout محافظ)
+      TaskSnapshot snapshot;
       try {
-        // در محیط emulator برای Web، getDownloadURL ممکن است کار نکند
-        imageUrl = await storageRef.getDownloadURL().timeout(
-          const Duration(seconds: 10),
+        snapshot = await uploadTask.timeout(
+          const Duration(seconds: 30),
           onTimeout: () {
-            debugPrint(
-              '⚠️ Emulator getDownloadURL() timed out — using fake URL',
-            );
-            return 'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
+            throw Exception('آپلود تصویر زمان‌بر شد (timeout).');
           },
         );
       } catch (e) {
-        debugPrint('⚠️ getDownloadURL() failed on emulator: $e');
-        imageUrl =
-            'http://localhost:9199/v0/b/local-bucket/o/product_images%2F$imageName';
+        // اگر uploadTask.timeout خطا داد، تلاش برای cancel
+        try {
+          await uploadTask.cancel();
+        } catch (_) {}
+        rethrow;
       }
 
-      debugPrint('✅ Final image URL: $imageUrl');
+      debugPrint(
+        'Upload state: ${snapshot.state}, transferred=${snapshot.bytesTransferred}',
+      );
 
+      if (snapshot.state != TaskState.success &&
+          snapshot.state != TaskState.canceled) {
+        // TaskState.success یا canceled (در حالت cancel ما خطا داده‌ایم) انتظار است
+        if (snapshot.state != TaskState.success) {
+          throw Exception('آپلود تصویر موفق نبود. وضعیت: ${snapshot.state}');
+        }
+      }
+
+      // ساخت URL تصویر بر اساس حالت emulator یا production
+      String imageUrl;
+      if (isUsingEmulator) {
+        // انتخاب host مناسب برای دسترسی از دستگاه:
+        String hostForRequest = '127.0.0.1';
+        try {
+          if (!kIsWeb && Platform.isAndroid) {
+            hostForRequest = '10.0.2.2';
+          }
+        } catch (_) {
+          // Platform ممکن است در بعضی محیط‌ها دردسترس نباشد؛ از 127.0.0.1 استفاده می‌کنیم
+          hostForRequest = '127.0.0.1';
+        }
+
+        // bucket name (اگر وجود نداشته باشد 'local-bucket' را استفاده می‌کنیم)
+        String bucketName = 'local-bucket';
+        try {
+          final b = FirebaseStorage.instance.bucket;
+          if (b != null && b.isNotEmpty) bucketName = b;
+        } catch (_) {}
+
+        // مسیر باید URL-encode شود
+        final encodedPath = Uri.encodeComponent(storagePath);
+
+        imageUrl =
+            'http://$hostForRequest:9199/v0/b/$bucketName/o/$encodedPath?alt=media';
+        debugPrint('Using emulator imageUrl: $imageUrl');
+      } else {
+        // production: از getDownloadURL استفاده کن
+        imageUrl = await storageRef.getDownloadURL();
+        debugPrint('Using production imageUrl: $imageUrl');
+      }
+
+      // ذخیره اطلاعات محصول در Firestore
       await FirebaseFirestore.instance.collection('products').add({
         'name': _nameController.text.trim(),
-        'price': int.parse(normalizeNumber(_priceController.text.trim())),
+        'price': price,
         'imageUrl': imageUrl,
         'category': selectedCategory!,
         'createdAt': FieldValue.serverTimestamp(),
@@ -194,6 +278,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         ),
       );
 
+      // پاک‌سازی فرم
       _nameController.clear();
       _priceController.clear();
       setState(() {
@@ -201,14 +286,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
         _webImage = null;
         selectedCategory = null;
       });
-    } catch (e) {
-      debugPrint('Submit error: $e');
+    } catch (e, st) {
+      debugPrint('Submit error: $e\n$st');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('خطا در افزودن محصول: $e'),
+          content: Text('خطا در افزودن محصول: ${e.toString()}'),
           backgroundColor: Colors.red.shade400,
         ),
       );
+    } finally {
+      setState(() => _submitting = false);
     }
   }
 
@@ -228,7 +315,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text('افزودن محصول'),
-          backgroundColor: const Color(0xFFB2DFDB), // سبز یواش
+          backgroundColor: const Color(0xFFB2DFDB),
           centerTitle: true,
           elevation: 0,
           foregroundColor: Colors.black87,
@@ -274,9 +361,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value == null || value.isEmpty
-                      ? 'قیمت را وارد کنید'
-                      : null,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'قیمت را وارد کنید';
+                    final normalized = normalizeNumber(value.trim());
+                    if (int.tryParse(normalized) == null) {
+                      return 'قیمت را به صورت عددی وارد کنید';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
@@ -306,27 +399,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     child: preview,
                   ),
                 const SizedBox(height: 16),
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('categories')
-                      .orderBy('name')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
+
+                // ✅ دسته‌بندی‌ها از CategoryController
+                Consumer<CategoryController>(
+                  builder: (context, controller, _) {
+                    final categories = controller.categories;
+                    print('📦 دسته‌ها: ${controller.categories}');
+                    print('✅ isLoaded: ${controller.isLoaded}');
+
+                    if (!controller.isLoaded) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    if (categories.isEmpty) {
                       return const Text(
                         'هیچ دسته‌ای یافت نشد',
                         style: TextStyle(color: Colors.red),
                       );
                     }
-
-                    final categories = snapshot.data!.docs
-                        .map((doc) => doc['name'].toString())
-                        .toSet()
-                        .toList();
 
                     if (selectedCategory != null &&
                         !categories.contains(selectedCategory)) {
@@ -358,10 +448,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     );
                   },
                 ),
+
                 const SizedBox(height: 32),
                 ElevatedButton.icon(
-                  icon: const Icon(Icons.check),
-                  label: const Text('افزودن محصول'),
+                  icon: _submitting
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.check),
+                  label: Text(_submitting ? 'در حال ارسال...' : 'افزودن محصول'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF4CAF50),
                     foregroundColor: Colors.white,
@@ -371,7 +468,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: _submitProduct,
+                  onPressed: _submitting ? null : _submitProduct,
                 ),
               ],
             ),
