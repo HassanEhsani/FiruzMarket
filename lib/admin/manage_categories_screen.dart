@@ -4,15 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ManageCategoriesScreen extends StatelessWidget {
   const ManageCategoriesScreen({super.key});
 
+  /// دیالوگ افزودن دسته جدید
   Future<void> _addCategoryDialog(BuildContext context) async {
-    final TextEditingController _controller = TextEditingController();
+    final TextEditingController controller = TextEditingController();
 
     await showDialog(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('افزودن دسته‌بندی جدید'),
         content: TextField(
-          controller: _controller,
+          controller: controller,
           decoration: const InputDecoration(
             labelText: 'نام دسته‌بندی',
             border: OutlineInputBorder(),
@@ -26,12 +27,29 @@ class ManageCategoriesScreen extends StatelessWidget {
           ElevatedButton(
             child: const Text('افزودن'),
             onPressed: () async {
-              final name = _controller.text.trim();
+              final name = controller.text.trim();
               if (name.isNotEmpty) {
-                await FirebaseFirestore.instance.collection('categories').add({
-                  'name': name,
-                });
-                Navigator.pop(context);
+                try {
+                  await FirebaseFirestore.instance.collection('categories').add({
+                    'name': name,
+                  });
+                  debugPrint("✅ دسته جدید اضافه شد: $name");
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('✅ دسته "$name" اضافه شد'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                } catch (e) {
+                  debugPrint("❌ خطا در افزودن دسته: $e");
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('خطا در افزودن دسته: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
               }
             },
           ),
@@ -40,6 +58,7 @@ class ManageCategoriesScreen extends StatelessWidget {
     );
   }
 
+  /// دیالوگ تأیید حذف دسته
   Future<void> _confirmDelete(
     String docId,
     String name,
@@ -69,16 +88,18 @@ class ManageCategoriesScreen extends StatelessWidget {
             .collection('categories')
             .doc(docId)
             .delete();
+        debugPrint("🗑️ دسته حذف شد: $name");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('✅ دسته‌بندی حذف شد'),
+            content: Text('✅ دسته "$name" حذف شد'),
             backgroundColor: Colors.green,
           ),
         );
       } catch (e) {
+        debugPrint("❌ خطا در حذف دسته: $e");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('خطا در حذف دسته‌بندی: $e'),
+            content: Text('خطا در حذف دسته: $e'),
             backgroundColor: Colors.red,
           ),
         );
@@ -104,7 +125,7 @@ class ManageCategoriesScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return const Center(child: Text('خطا در دریافت دسته‌بندی‌ها'));
+            return const Center(child: Text('❌ خطا در دریافت دسته‌بندی‌ها'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -148,7 +169,7 @@ class ManageCategoriesScreen extends StatelessWidget {
                     vertical: 12,
                   ),
                   title: Text(
-                    data['name'],
+                    data['name'] ?? 'بدون نام',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -158,7 +179,7 @@ class ManageCategoriesScreen extends StatelessWidget {
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () =>
-                        _confirmDelete(doc.id, data['name'], context),
+                        _confirmDelete(doc.id, data['name'] ?? '', context),
                   ),
                 ),
               );

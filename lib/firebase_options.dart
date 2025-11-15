@@ -1,4 +1,3 @@
-// ✅ File modified for Firebase Emulator usage
 // ignore_for_file: type=lint
 
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
@@ -7,27 +6,47 @@ import 'package:flutter/foundation.dart'
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    // در حالت emulator نیازی به تفاوت بین پلتفرم‌ها نیست
-    return emulator;
+    if (kIsWeb) {
+      // 👈 اجرای وب → استفاده از کانفیگ پروژهٔ firuz-market-admin
+      return web;
+    }
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return android;
+      case TargetPlatform.iOS:
+        return ios;
+      default:
+        return web;
+    }
   }
 
-  // 🔥 این تنظیمات مخصوص emulator است (localhost)
-  static const FirebaseOptions emulator = FirebaseOptions(
-    apiKey: 'fake-api-key', // مقدارهای ساختگی
-    appId: '1:111111111111:web:emulator1234',
-    messagingSenderId: '111111111111',
-    projectId: 'firuzmarket-54136',
-    storageBucket: 'firuzmarket-54136.appspot.com',
+  // ✅ تنظیمات Web — پروژهٔ صحیح: firuz-market-admin
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDYchyjzthtgfm0319qymWy-z84DDBZnAj0',
+    appId: '1:205797022672:web:ea44a3302f41ebd3a8b7d5',
+    messagingSenderId: '205797022672',
+    projectId: 'firuz-market-admin',
+    authDomain: 'firuz-market-admin.firebaseapp.com',
+    storageBucket: 'firuz-market-admin.appspot.com', // ✅ اصلاح شد
+    measurementId: 'G-MH3GB8FFZC',
   );
 
-  // 🔸 در صورت نیاز به نسخه اصلی (نه emulator) این بخش‌ها را برگردان
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCmdJ1isqYAS1v-bQxopvy8QqQx3yEBLgc',
-    appId: '1:202974235575:web:254e4e59ead0d21ea3f632',
-    messagingSenderId: '202974235575',
-    projectId: 'firuzmarket-54136',
-    authDomain: 'firuzmarket-54136.firebaseapp.com',
-    storageBucket: 'firuzmarket-54136.appspot.com',
-    measurementId: 'G-GE6TJ0Z104',
+  // ⛔ اگر اندروید/آی‌او‌اس فعلاً نداری، می‌تونی همین مقادیر را خالی بگذاری یا بعداً پر کنی
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: '<<apiKey اندروید>>',
+    appId: '<<appId اندروید>>',
+    messagingSenderId: '205797022672',
+    projectId: 'firuz-market-admin',
+    storageBucket: 'firuz-market-admin.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: '<<apiKey آی‌او‌اس>>',
+    appId: '<<appId آی‌او‌اس>>',
+    messagingSenderId: '205797022672',
+    projectId: 'firuz-market-admin',
+    storageBucket: 'firuz-market-admin.appspot.com',
+    iosClientId: '<<clientId آی‌او‌اس>>',
+    iosBundleId: '<<bundleId آی‌او‌اس>>',
   );
 }
